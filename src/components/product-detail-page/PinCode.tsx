@@ -9,7 +9,10 @@ import {
   changePinCode,
   checkPincodeApi,
 } from '../../stores/product-detail/product-action';
-import { useIsPincodeEntered } from '../../stores/product-detail/product-store';
+import {
+  useIsPincodeEntered,
+  usePincodeBasedPrice,
+} from '../../stores/product-detail/product-store';
 
 const PinCode = ({
   product_id,
@@ -37,6 +40,7 @@ const PinCode = ({
     },
   });
   const isPincodeEnter = useIsPincodeEntered();
+  const { isPincodePriceAvailable } = usePincodeBasedPrice();
   const [state, setState] = useState('');
   const submitData = async (data: { pincode: any }) => {
     const { pincode } = data;
@@ -124,6 +128,19 @@ const PinCode = ({
 
       <div>
         <p className="pincode-text">{t('enterPinckToInstantlyCheck')}</p>
+        {isPincodePriceAvailable && (
+          <p
+            className="pincode-availability"
+            style={{
+              fontSize: '12px',
+              color: '#28a745',
+              marginTop: '5px',
+              fontWeight: '500',
+            }}
+          >
+            ✓ Product available at this pincode
+          </p>
+        )}
       </div>
     </>
   );

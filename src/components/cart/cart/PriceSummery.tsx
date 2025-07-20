@@ -12,6 +12,7 @@ import {
 } from '../../../stores/cart/cart-action';
 import { useRouter } from 'next/router';
 import { useCoupon } from '../../../stores/coupon/coupon-store';
+import { useCartPincodeBasedPrice } from '../../../stores/cart/cart-store';
 import { isEmpty } from 'lodash';
 
 const PriceSummery = ({
@@ -22,6 +23,8 @@ const PriceSummery = ({
   showGST,
 }: any) => {
   const { coupon } = useCoupon();
+  const { pincodeBasedPrices, isPincodePriceAvailable } =
+    useCartPincodeBasedPrice();
   const router = useRouter();
 
   const cgst = calcuLateCGSTCharges(showGST);
@@ -47,6 +50,17 @@ const PriceSummery = ({
                 <span className="weight-500">{t('MRP')}</span>
                 <span className="amount weight-500">
                   {priceWithCurrency(calculateTotal(cartItems))}
+                  {isPincodePriceAvailable && (
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        color: '#28a745',
+                        marginLeft: '8px',
+                      }}
+                    >
+                      • Local Pricing
+                    </span>
+                  )}
                 </span>
               </li>
               <li>
@@ -127,11 +141,24 @@ const PriceSummery = ({
               <span className="weight-500">{t('MRP')}</span>
               <span className="amount weight-500">
                 {priceWithCurrency(
-                  selectedProduct?.price *
+                  (pincodeBasedPrices['selectedProduct'] ||
+                    selectedProduct?.price) *
                     (selectedProduct?.selectQuantity ||
                       selectedProduct?.minimum_quantity ||
                       1)
                 )}
+                {isPincodePriceAvailable &&
+                  pincodeBasedPrices['selectedProduct'] && (
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        color: '#28a745',
+                        marginLeft: '8px',
+                      }}
+                    >
+                      • Local Pricing
+                    </span>
+                  )}
               </span>
             </li>
             <li>

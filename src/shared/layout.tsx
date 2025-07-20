@@ -18,6 +18,21 @@ const Layout = (props: any) => {
         <Header />
         <main>{props?.children}</main>
         <Footer />
+        <a 
+          href="https://wa.me/919109056169"
+          className="callback-float"
+          target="_blank" 
+          rel="noopener noreferrer"
+          aria-label="Chat with us on WhatsApp"
+        >
+          <div className="callback-content">
+            <p className="callback-title">Request</p>
+            <div className="callback-icon">
+              <i className="fa-solid fa-phone"></i>
+            </div>
+            <p className="callback-subtitle">Callback</p>
+          </div>
+        </a>
       </AppProvider>
     </MetaTags>
   );

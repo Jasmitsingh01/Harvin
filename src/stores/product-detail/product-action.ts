@@ -6,6 +6,7 @@ import {
   generateEncryptUrl,
   getSelectedProductCombination,
 } from '../../utilities/helper';
+import { getProductPriceByPincode } from '../../utilities/pincode-price-helper';
 
 const { setState, getState } = useProductDetailStore;
 
@@ -35,6 +36,9 @@ export const changePinCode = () => {
     codeCheckLoadingCart: false,
     pincodeErrorCart: '',
     pincodeSuccessCart: '',
+    pincodeBasedPrice: null,
+    pincodeBasedSku: null,
+    isPincodePriceAvailable: false,
   });
 };
 export const checkPincodeApi = async (payload: any) => {
@@ -49,6 +53,46 @@ export const checkPincodeApi = async (payload: any) => {
     if (result.status) {
       // Store pincode data in local storage
       localStorage.setItem('pincode', payload.postcode);
+      
+      // Get current product data for price update
+      const { product } = getState();
+      console.log('Product data for pincode update:', product);
+      console.log('Pincode:', payload.postcode);
+      console.log('Product reference_code:', product?.reference_code);
+      
+      if (product?.reference_code) {
+        const priceUpdate = getProductPriceByPincode(
+          payload.postcode,
+          product.reference_code,
+          product.price || 0
+        );
+        
+        console.log('Price update result:', priceUpdate);
+        
+        setState({
+          pincodeBasedPrice: priceUpdate.updatedPrice,
+          pincodeBasedSku: priceUpdate.sku,
+          isPincodePriceAvailable: priceUpdate.isAvailable,
+        });
+      } else {
+        console.log('No reference_code found in product');
+        // For testing, let's try with a default reference code for chairs
+        // In production, this should be set properly in the product data
+        const testReferenceCode = 'chairs'; // This maps to chairs in data.json
+        const priceUpdate = getProductPriceByPincode(
+          payload.postcode,
+          testReferenceCode,
+          product.price || 0
+        );
+        
+        console.log('Test price update result:', priceUpdate);
+        
+        setState({
+          pincodeBasedPrice: priceUpdate.updatedPrice,
+          pincodeBasedSku: priceUpdate.sku,
+          isPincodePriceAvailable: priceUpdate.isAvailable,
+        });
+      }
     }
     setState({
       codeCheckLoading: false,
@@ -63,6 +107,9 @@ export const checkPincodeApi = async (payload: any) => {
       pincodeError: '',
       pincodeSuccess: '',
       pincodeEntered: false,
+      pincodeBasedPrice: null,
+      pincodeBasedSku: null,
+      isPincodePriceAvailable: false,
     });
   }
 };
@@ -142,12 +189,13 @@ export const getProductCombination = (
   setState({
     productCombinations: product_combinations,
     selectedCombination: selectedCombination,
-    selectedProductCombination:
-      {
-        ...productCombination,
-        name: productName,
-        description: productDescription,
-      } || product_combinations[0],
+    selectedProductCombination: productCombination
+      ? {
+          ...productCombination,
+          name: productName,
+          description: productDescription,
+        }
+      : product_combinations[0],
     combinationData: combinationData,
     combinationLoading: false,
   });
@@ -177,12 +225,41 @@ export const getProduct = async (slug: string | any) => {
   });
   try {
     const { data: result } = await api.get(ROUTES.getProduct(slug));
-    return setState({
-      product: result,
-      loading: false,
-      error: null,
-      combinations: result?.product_combinations,
-    });
+    
+    // Load pincode-based prices if pincode exists in localStorage
+    const storedPincode = localStorage.getItem('pincode');
+    if (storedPincode) {
+      // Try with product reference_code first, then fallback to 'chairs' for testing
+      const referenceCode = result?.reference_code || 'chairs';
+      const priceUpdate = getProductPriceByPincode(
+        Number(storedPincode),
+        referenceCode,
+        result.price || 0
+      );
+      
+      console.log('Loading pincode prices on product load:', {
+        pincode: storedPincode,
+        referenceCode,
+        priceUpdate
+      });
+      
+      setState({
+        product: result,
+        loading: false,
+        error: null,
+        combinations: result?.product_combinations,
+        pincodeBasedPrice: priceUpdate.updatedPrice,
+        pincodeBasedSku: priceUpdate.sku,
+        isPincodePriceAvailable: priceUpdate.isAvailable,
+      });
+    } else {
+      setState({
+        product: result,
+        loading: false,
+        error: null,
+        combinations: result?.product_combinations,
+      });
+    }
   } catch (e: any) {
     return setState({
       product: null,

@@ -18,6 +18,7 @@ import CombinationList from './CombinationList';
 import {
   useProductDetailValidate,
   useSelectedProductCombination,
+  usePincodeBasedPrice,
 } from '../../stores/product-detail/product-store';
 import QuantityButton from './quantity-button';
 import { useRouter } from 'next/router';
@@ -31,6 +32,7 @@ import { loginModalOpen, setModalType } from '../../stores/user/user-action';
 
 import { addLastViewedItem } from '../../stores/last-viewed/last-action';
 import { CouponRemoveData } from '../../stores/coupon/coupon-action';
+import Offers from './Offers';
 // import { useLastViewedItmes } from '../../stores/last-viewed/last-store';
 
 const ToggelSideBarNav = dynamic(() => import('./sidebar-dropdown'), {
@@ -50,7 +52,7 @@ const ProductDetailPage = (props: any) => {
 
   const { t } = useTranslation();
 
-  console.log(result, 'sdbdsjb');
+  // console.log(result, 'sdbdsjb');
 
   // const { lastViewedItems } = useLastViewedItmes();
 
@@ -58,6 +60,7 @@ const ProductDetailPage = (props: any) => {
   const selectedProductCombination = useSelectedProductCombination();
   const selectedProduct = selectedProductCombination || result;
   const { selectQuantity = 1 } = selectedProduct || {};
+  const { pincodeBasedPrice, isPincodePriceAvailable } = usePincodeBasedPrice();
   const {
     productDetailError,
     pincodeError,
@@ -137,8 +140,8 @@ const ProductDetailPage = (props: any) => {
     // product_url:result.product_url
   };
 
-  console.log(result, 'helloooooo');
-
+  // console.log(result, 'helloooooo');
+  // const {reference_code} = result;
   const removeCouponAndBuyNow = async () => {
     // Remove coupon data from local storage
     await CouponRemoveData();
@@ -226,14 +229,31 @@ const ProductDetailPage = (props: any) => {
                     </h4>
 
                     <span className="price-num text-24 weight-600">
-                      {selectedProduct?.discounted_price !== null
-                        ? priceWithCurrency(
-                            selectedProduct?.discounted_price
-                              ?.discounted_price * selectQuantity
-                          )
-                        : priceWithCurrency(
-                            selectedProduct?.price * selectQuantity
-                          )}
+                      {(() => {
+                        const effectivePrice =
+                          isPincodePriceAvailable && pincodeBasedPrice
+                            ? pincodeBasedPrice
+                            : selectedProduct?.discounted_price
+                                ?.discounted_price || selectedProduct?.price;
+
+                        return (
+                          <>
+                            {priceWithCurrency(effectivePrice * selectQuantity)}
+                            {isPincodePriceAvailable && pincodeBasedPrice && (
+                              <span
+                                style={{
+                                  fontSize: '12px',
+                                  color: '#28a745',
+                                  marginLeft: '8px',
+                                  fontWeight: '500',
+                                }}
+                              >
+                                • Local
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </span>
                   </div>
                 </div>
@@ -243,6 +263,16 @@ const ProductDetailPage = (props: any) => {
                   handleCart={() => addToCart(selectedProductData)}
                   // handleBuy={() => buyNow(selectedProductData, router)}
                   handleBuy={removeCouponAndBuyNow}
+                />
+
+                {/* Offers Section */}
+                <Offers
+                  productPrice={
+                    selectedProduct?.discounted_price?.discounted_price ||
+                    selectedProduct?.price ||
+                    0
+                  }
+                  productId={result?.id?.toString() || ''}
                 />
 
                 <ToggelSideBarNav />

@@ -26,6 +26,9 @@ export const INTIAL_STATE: any = {
   stateloading: false,
   states: [],
   selectedGST: {},
+  pincodeBasedPrices: {},
+  pincodeBasedSkus: {},
+  isPincodePriceAvailable: false,
 };
 
 export const useCartStore = create(
@@ -115,5 +118,13 @@ export const useGetAllStates = () => {
   return useCartStore((s) => ({
     loading: s.stateloading,
     states: s.states,
+  }));
+};
+
+export const useCartPincodeBasedPrice = () => {
+  return useCartStore((s) => ({
+    pincodeBasedPrices: s.pincodeBasedPrices,
+    pincodeBasedSkus: s.pincodeBasedSkus,
+    isPincodePriceAvailable: s.isPincodePriceAvailable,
   }));
 };

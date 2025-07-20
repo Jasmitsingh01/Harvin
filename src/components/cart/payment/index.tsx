@@ -12,7 +12,10 @@ import { useTranslation } from 'react-i18next';
 
 import couponImg from '../../../assets/images/apply-coupon-img.png';
 import PriceSummery from '../cart/PriceSummery';
-import { useCartStore } from '../../../stores/cart/cart-store';
+import {
+  useCartStore,
+  useCartPincodeBasedPrice,
+} from '../../../stores/cart/cart-store';
 // import { Button } from 'react-bootstrap';
 // import { useOrderData } from '../../../stores/orders/order-store';
 import { orderPayment, postOrder } from '../../../stores/orders/order-action';
@@ -38,6 +41,7 @@ const PaymentBlock = () => {
   // const { cartItems } = useCartStore();
 
   const { cartItems, selectedProduct, selectedAddress } = useCartStore();
+  const { pincodeBasedPrices } = useCartPincodeBasedPrice();
 
   const handleCouponList = () => {
     if (localStorage.token) {
@@ -110,7 +114,8 @@ const PaymentBlock = () => {
     let dataToPost;
 
     const subtotalSum = cartItems?.reduce((sum, item) => {
-      return sum + item.unit_price * item.quantity;
+      const itemPrice = pincodeBasedPrices[item.id] || item.unit_price;
+      return sum + itemPrice * item.quantity;
     }, 0);
 
     if (router.pathname.includes('cart')) {
@@ -118,9 +123,10 @@ const PaymentBlock = () => {
         products: cartItems?.map((item: any) => ({
           order_quantity: item?.quantity,
           product_id: item?.id,
-          unit_price: item?.unit_price,
+          unit_price: pincodeBasedPrices[item.id] || item?.unit_price,
           product_attribute_id: item?.product_attribute_id,
-          subtotal: item.unit_price * item?.quantity,
+          subtotal:
+            (pincodeBasedPrices[item.id] || item.unit_price) * item?.quantity,
         })),
         status: 1,
         amount: subtotalSum,
@@ -144,28 +150,36 @@ const PaymentBlock = () => {
             product_attribute_id:
               selectedProduct?.combinations[0]?.product_attribute_id,
             unit_price:
-              selectedProduct?.discounted_price !== null
+              pincodeBasedPrices['selectedProduct'] ||
+              (selectedProduct?.discounted_price !== null
                 ? selectedProduct?.discounted_price.discounted_price
-                : selectedProduct.price,
+                : selectedProduct.price),
             subtotal:
-              selectedProduct?.discounted_price !== null
-                ? selectedProduct?.discounted_price.discounted_price
-                : selectedProduct.price,
+              (pincodeBasedPrices['selectedProduct'] ||
+                (selectedProduct?.discounted_price !== null
+                  ? selectedProduct?.discounted_price.discounted_price
+                  : selectedProduct.price)) *
+              (selectedProduct?.selectQuantity
+                ? selectedProduct?.selectQuantity
+                : selectedProduct?.minimum_quantity || 1),
           },
         ],
         status: 1,
         amount:
-          selectedProduct?.discounted_price !== null
+          pincodeBasedPrices['selectedProduct'] ||
+          (selectedProduct?.discounted_price !== null
             ? selectedProduct?.discounted_price.discounted_price
-            : selectedProduct.price,
+            : selectedProduct.price),
         paid_total:
-          selectedProduct?.discounted_price !== null
+          pincodeBasedPrices['selectedProduct'] ||
+          (selectedProduct?.discounted_price !== null
             ? selectedProduct?.discounted_price.discounted_price
-            : selectedProduct.price,
+            : selectedProduct.price),
         total:
-          selectedProduct?.discounted_price !== null
+          pincodeBasedPrices['selectedProduct'] ||
+          (selectedProduct?.discounted_price !== null
             ? selectedProduct?.discounted_price.discounted_price
-            : selectedProduct.price,
+            : selectedProduct.price),
         customer_contact: selectedAddress?.mobile_number,
         payment_gateway: 'RAZORPAY',
         billing_address: selectedAddress?.id,

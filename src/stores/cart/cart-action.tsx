@@ -13,6 +13,7 @@ import {
   isUserLoggedIn,
 } from '../../utilities/helper';
 import { toast } from 'react-toastify';
+import { getProductPriceByPincode } from '../../utilities/pincode-price-helper';
 
 const { setState, getState } = useCartStore;
 
@@ -26,8 +27,16 @@ export const getCartItems = async () => {
     try {
       const { data: result } = await api.get(ROUTES.getCartItems());
       if (!isEmpty(result)) {
+        const updatedCartItems = [...combineArray([], result.cart_products)];
+        
+        // Load pincode-based prices if pincode exists in localStorage
+        const storedPincode = localStorage.getItem('pincode');
+        if (storedPincode) {
+          updateCartPricesByPincode(Number(storedPincode));
+        }
+        
         return setState({
-          cartItems: [...combineArray([], result.cart_products)],
+          cartItems: updatedCartItems,
           loading: false,
           totalItemPrice: result.total,
         });
@@ -563,6 +572,51 @@ export const buyNow = async (elem: any, router: NextRouter) => {
   // }, 4000);
   // Reload the checkout page
   // window.location.reload();
+};
+
+export const updateCartPricesByPincode = (pincode: number) => {
+  const { cartItems, selectedProduct } = getState();
+  const pincodeBasedPrices: { [key: string]: number } = {};
+  const pincodeBasedSkus: { [key: string]: string } = {};
+  
+  // Update cart items prices
+  cartItems.forEach((item: any) => {
+    if (item.reference_code) {
+      const priceUpdate = getProductPriceByPincode(
+        pincode,
+        item.reference_code,
+        item.unit_price || item.price || 0
+      );
+      
+      if (priceUpdate.isAvailable && priceUpdate.updatedPrice) {
+        pincodeBasedPrices[item.id] = priceUpdate.updatedPrice;
+        pincodeBasedSkus[item.id] = priceUpdate.sku || '';
+      }
+    }
+  });
+  
+  // Update selected product price if exists
+  if (selectedProduct?.reference_code) {
+    const priceUpdate = getProductPriceByPincode(
+      pincode,
+      selectedProduct.reference_code,
+      selectedProduct.price || 0
+    );
+    
+    if (priceUpdate.isAvailable && priceUpdate.updatedPrice) {
+      pincodeBasedPrices['selectedProduct'] = priceUpdate.updatedPrice;
+      pincodeBasedSkus['selectedProduct'] = priceUpdate.sku || '';
+    }
+  }
+  
+  // Store pincode in localStorage for persistence
+  localStorage.setItem('pincode', pincode.toString());
+  
+  setState({
+    pincodeBasedPrices,
+    pincodeBasedSkus,
+    isPincodePriceAvailable: Object.keys(pincodeBasedPrices).length > 0,
+  });
 };
 
 export const incrementCartData = async (elem: any, product: any) => {

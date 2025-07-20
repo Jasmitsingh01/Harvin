@@ -42,6 +42,8 @@ import MyAddressSkeleton from './AddressSkeleton';
 import TextInput from '../../../shared/fields/TextInput';
 import AutocompleteSelect from '../../../shared/fields/AutoCompleteSelect';
 import { useRouter } from 'next/router';
+import { updateCartPricesByPincode } from '../../../stores/cart/cart-action';
+import { useCartPincodeBasedPrice } from '../../../stores/cart/cart-store';
 
 const AddressBlock = () => {
   const { t } = useTranslation();
@@ -79,7 +81,7 @@ const AddressBlock = () => {
     }
   }, [setValue, updateAddress, reset, updateAddressFlag]);
   const { cartItems, selectedAddress, selectedProduct } = useCartStore();
-
+  const { isPincodePriceAvailable } = useCartPincodeBasedPrice();
   const router = useRouter();
   const handleAddress = (values: any) => {
     values.is_service_lift = isBoolean(values.is_service_lift)
@@ -217,6 +219,51 @@ const AddressBlock = () => {
                         {t<any>(errors?.is_service_lift?.message)}
                       </p>
                     )} */}
+                  </div>
+
+                  {/* Pincode-based pricing section */}
+                  <div className="row mt-4">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-label">
+                          Check Local Pricing {!isPincodePriceAvailable && '*'}
+                        </label>
+                        <div className="d-flex align-items-center">
+                          <TextInput
+                            type="text"
+                            name="pincode"
+                            {...register('pincode')}
+                            control={control}
+                            maxLength={6}
+                            errors={errors}
+                            placeholder="Enter pincode"
+                            className="form-control"
+                            onChange={(name, value) => {
+                              if (value.length === 6) {
+                                updateCartPricesByPincode(Number(value));
+                              }
+                            }}
+                          />
+                          {isPincodePriceAvailable && (
+                            <span
+                              style={{
+                                fontSize: '12px',
+                                color: '#28a745',
+                                marginLeft: '8px',
+                                fontWeight: '500',
+                              }}
+                            >
+                              ✓ Local pricing applied
+                            </span>
+                          )}
+                        </div>
+                        {errors?.pincode && (
+                          <p className="text-danger mt-2">
+                            {t<any>(errors?.pincode?.message)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </>
               ) : (

@@ -22,6 +22,9 @@ export const INTIAL_STATE: any = {
   pincodeError: '',
   pincodeSuccess: '',
   pincodeEntered: false,
+  pincodeBasedPrice: null,
+  pincodeBasedSku: null,
+  isPincodePriceAvailable: false,
 };
 
 export const useProductDetailStore = create(() => ({
@@ -77,4 +80,12 @@ export const useProductDetailValidate = () => {
 
 export const useIsPincodeEntered = () => {
   return useProductDetailStore((s) => s.pincodeEntered);
+};
+
+export const usePincodeBasedPrice = () => {
+  return useProductDetailStore((s) => ({
+    pincodeBasedPrice: s.pincodeBasedPrice,
+    pincodeBasedSku: s.pincodeBasedSku,
+    isPincodePriceAvailable: s.isPincodePriceAvailable,
+  }));
 };
