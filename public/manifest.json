@@ -1,0 +1,24 @@
+{
+    "name": "Harvin Chairs",
+    "short_name": "Harvin Chairs",
+    "icons": [
+      {
+        "src": "/harvin-chairs-192X192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+
+      },      {
+        "src": "/harvin-chairs-512X512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+
+      }
+    ],
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "start_url": "/home",
+    "display": "standalone",
+    "orientation": "portrait"
+  }

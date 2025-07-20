@@ -1,0 +1,17 @@
+changes
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# interactive rebase in progress; onto 126567d
+# Last command done (1 command done):
+#    pick eabd476 changes
+# Next command to do (1 remaining command):
+#    pick 07abcc1 changes
+# You are currently rebasing branch 'design' on '126567d'.
+#
+# Changes to be committed:
+#	modified:   src/assets/css/style.css
+#	modified:   src/components/auth/LoginAuth.tsx
+#	modified:   src/components/staticPages/aboutUs.tsx
+#

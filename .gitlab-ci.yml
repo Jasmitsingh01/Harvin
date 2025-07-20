@@ -1,0 +1,31 @@
+stages:
+  - deploy
+
+variables:
+  SSH_PRIVATE: "$CI_JOB_TOKEN"  # Use CI_JOB_TOKEN as a placeholder; the actual private key is set as a CI/CD variable
+
+deploy:
+  stage: deploy
+  only:
+    - dev  # Adjust branch or tags as needed
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/gitlab_rsa
+    - chmod 600 ~/.ssh/gitlab_rsa
+    - ssh-keyscan -H 13.201.204.29 >> ~/.ssh/known_hosts
+    - |
+      ssh -i ~/.ssh/gitlab_rsa -o StrictHostKeyChecking=no ec2-user@13.201.204.29 '
+        cd /var/www/harvin_react &&
+        git fetch origin dev &&
+        git reset --hard origin/dev &&
+        yarn install &&
+        yarn build &&
+        sed -i "s/\"start-server\": \"next start\"/\"start-server\": \"next start -p 3022\"/" package.json &&
+        if pm2 info harvin > /dev/null
+        then
+          npx pm2 restart harvin
+        else
+          npx pm2 start yarn --name "harvin" -- start-server
+        fi &&
+        echo "Deployment successful."
+      '

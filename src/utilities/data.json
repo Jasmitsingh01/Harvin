@@ -1,0 +1,833 @@
+[
+    {
+    "pincode": 490001,
+    "products": {
+      "sofa": {
+        "sku": "8324-1217-001",
+        "price": 12999
+      },
+      "mandir": {
+        "sku": "8324-1411-003",
+        "price": 8699
+      },
+      "bed": {
+        "sku": "8324-1611-001",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-001",
+        "price": 19099
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-001",
+        "price": 27899
+      },
+      "chairs": {
+        "sku": "8324-1112-001",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 491001,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-001",
+        "price": 18399
+      },
+      "mandir": {
+        "sku": "8324-1411-004",
+        "price": 8699
+      },
+      "bed": {
+        "sku": "8324-1611-002",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-002",
+        "price": 14199
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-002",
+        "price": 35999
+      },
+      "chairs": {
+        "sku": "8324-1112-002",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490021,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-001",
+        "price": 29899
+      },
+      "mandir": {
+        "sku": "8324-1411-005",
+        "price": 9099
+      },
+      "bed": {
+        "sku": "8324-1611-003",
+        "price": 21699
+      },
+      "wardrobe": {
+        "sku": "8324-1811-003",
+        "price": 19099
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-003",
+        "price": 27899
+      },
+      "chairs": {
+        "sku": "8324-1112-003",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490025,
+    "products": {
+      "sofa": {
+        "sku": "8324-1217-002",
+        "price": 17099
+      },
+      "mandir": {
+        "sku": "8324-1411-006",
+        "price": 12999
+      },
+      "bed": {
+        "sku": "8324-1611-004",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-004",
+        "price": 19799
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-004",
+        "price": 32699
+      },
+      "chairs": {
+        "sku": "8324-1112-004",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490009,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-002",
+        "price": 24499
+      },
+      "mandir": {
+        "sku": "8324-1411-007",
+        "price": 12999
+      },
+      "bed": {
+        "sku": "8324-1611-005",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-005",
+        "price": 19799
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-005",
+        "price": 27899
+      },
+      "chairs": {
+        "sku": "8324-1112-005",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490006,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-002",
+        "price": 39399
+      },
+      "mandir": {
+        "sku": "8324-1411-008",
+        "price": 15099
+      },
+      "bed": {
+        "sku": "8324-1611-006",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-006",
+        "price": 19799
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-006",
+        "price": 27899
+      },
+      "chairs": {
+        "sku": "8324-1112-006",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490024,
+    "products": {
+      "sofa": {
+        "sku": "8324-1217-003",
+        "price": 21099
+      },
+      "mandir": {
+        "sku": "8324-1411-009",
+        "price": 15099
+      },
+      "bed": {
+        "sku": "8324-1611-007",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-007",
+        "price": 29699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-007",
+        "price": 35999
+      },
+      "chairs": {
+        "sku": "8324-1112-007",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490026,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-003",
+        "price": 30599
+      },
+      "bed": {
+        "sku": "8324-1611-008",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-008",
+        "price": 12299
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-008",
+        "price": 35199
+      },
+      "chairs": {
+        "sku": "8324-1112-008",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490011,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-003",
+        "price": 49599
+      },
+      "bed": {
+        "sku": "8324-1611-009",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-009",
+        "price": 12699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-009",
+        "price": 35999
+      },
+      "chairs": {
+        "sku": "8324-1112-009",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490023,
+    "products": {
+      "sofa": {
+        "sku": "8324-1217-004",
+        "price": 15699
+      },
+      "bed": {
+        "sku": "8324-1611-010",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-001",
+        "price": 18399
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-010",
+        "price": 29299
+      },
+      "chairs": {
+        "sku": "8324-1112-010",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490020,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-004",
+        "price": 22499
+      },
+      "bed": {
+        "sku": "8324-1611-011",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-002",
+        "price": 17699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-011",
+        "price": 27899
+      },
+      "chairs": {
+        "sku": "8324-1112-011",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490022,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-004",
+        "price": 35999
+      },
+      "bed": {
+        "sku": "8324-1611-012",
+        "price": 21099
+      },
+      "wardrobe": {
+        "sku": "8324-1812-003",
+        "price": 18399
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-012",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-012",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492001,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-005",
+        "price": 22499
+      },
+      "bed": {
+        "sku": "8324-1611-013",
+        "price": 21099
+      },
+      "wardrobe": {
+        "sku": "8324-1813-001",
+        "price": 32699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-013",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-013",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 493221,
+    "products": {
+      "sofa": {
+        "sku": "8324-1222-001",
+        "price": 35999
+      },
+      "bed": {
+        "sku": "8324-1611-014",
+        "price": 21099
+      },
+      "wardrobe": {
+        "sku": "8324-1813-002",
+        "price": 53699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-014",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-014",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492009,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-001",
+        "price": 32499
+      },
+      "bed": {
+        "sku": "8324-1611-015",
+        "price": 19699
+      },
+      "wardrobe": {
+        "sku": "8324-1813-003",
+        "price": 32699
+      },
+      "sofaCumBed": {
+        "sku": "8324-1614-015",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-015",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492008,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-002",
+        "price": 32499
+      },
+      "bed": {
+        "sku": "8324-1611-016",
+        "price": 21099
+      },
+      "wardrobe": {
+        "sku": "8324-1814-001",
+        "price": 52999
+      },
+      "chairs": {
+        "sku": "8324-1112-016",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492012,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-003",
+        "price": 36599
+      },
+      "bed": {
+        "sku": "8324-1611-017",
+        "price": 21099
+      },
+      "wardrobe": {
+        "sku": "8324-1812-004",
+        "price": 2099
+      },
+      "chairs": {
+        "sku": "8324-1112-017",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492002,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-004",
+        "price": 36599
+      },
+      "bed": {
+        "sku": "8324-1611-018",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-005",
+        "price": 2099
+      },
+      "chairs": {
+        "sku": "8324-1112-018",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492004,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-005",
+        "price": 37999
+      },
+      "bed": {
+        "sku": "8324-1611-019",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1811-009",
+        "price": 12699
+      },
+      "chairs": {
+        "sku": "8324-1112-019",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492010,
+    "products": {
+      "sofa": {
+        "sku": "8324-1223-006",
+        "price": 36599
+      },
+      "bed": {
+        "sku": "8324-1611-020",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-001",
+        "price": 18399
+      },
+      "chairs": {
+        "sku": "8324-1112-020",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492014,
+    "products": {
+      "sofa": {
+        "sku": "8324-1217-013",
+        "price": 15699
+      },
+      "bed": {
+        "sku": "8324-1611-021",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-002",
+        "price": 18399
+      },
+      "chairs": {
+        "sku": "8324-1112-021",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492099,
+    "products": {
+      "sofa": {
+        "sku": "8324-1218-017",
+        "price": 22499
+      },
+      "bed": {
+        "sku": "8324-1611-022",
+        "price": 22499
+      },
+      "wardrobe": {
+        "sku": "8324-1812-003",
+        "price": 18399
+      },
+      "chairs": {
+        "sku": "8324-1112-022",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492003,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-014",
+        "price": 35999
+      },
+      "bed": {
+        "sku": "8324-1611-023",
+        "price": 22499
+      },
+      "chairs": {
+        "sku": "8324-1112-023",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492005,
+    "products": {
+      "sofa": {
+        "sku": "8324-1224-001",
+        "price": 36599
+      },
+      "bed": {
+        "sku": "8324-1611-024",
+        "price": 22499
+      },
+      "chairs": {
+        "sku": "8324-1112-024",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 493661,
+    "products": {
+      "sofa": {
+        "sku": "8324-1224-002",
+        "price": 32499
+      },
+      "bed": {
+        "sku": "8324-1611-025",
+        "price": 22499
+      },
+      "chairs": {
+        "sku": "8324-1112-025",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492013,
+    "products": {
+      "sofa": {
+        "sku": "8324-1224-003",
+        "price": 37999
+      },
+      "bed": {
+        "sku": "8324-1611-026",
+        "price": 21099
+      },
+      "chairs": {
+        "sku": "8324-1112-026",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492015,
+    "products": {
+      "sofa": {
+        "sku": "8324-1224-004",
+        "price": 36599
+      },
+      "bed": {
+        "sku": "8324-1611-027",
+        "price": 21099
+      },
+      "chairs": {
+        "sku": "8324-1112-027",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492016,
+    "products": {
+      "sofa": {
+        "sku": "8324-1225-002",
+        "price": 35199
+      },
+      "bed": {
+        "sku": "8324-1611-028",
+        "price": 21099
+      },
+      "chairs": {
+        "sku": "8324-1112-028",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492017,
+    "products": {
+      "sofa": {
+        "sku": "8324-1211-001",
+        "price": 19799
+      },
+      "bed": {
+        "sku": "8324-1611-029",
+        "price": 21099
+      },
+      "chairs": {
+        "sku": "8324-1112-029",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492018,
+    "products": {
+      "sofa": {
+        "sku": "8324-1212-001",
+        "price": 28599
+      },
+      "bed": {
+        "sku": "8324-1611-030",
+        "price": 21099
+      },
+      "chairs": {
+        "sku": "8324-1112-030",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490042,
+    "products": {
+      "sofa": {
+        "sku": "8324-1214-001",
+        "price": 46199
+      },
+      "bed": {
+        "sku": "8324-1611-031",
+        "price": 19699
+      },
+      "chairs": {
+        "sku": "8324-1112-031",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 491221,
+    "products": {
+      "sofa": {
+        "sku": "8324-1212-002",
+        "price": 22499
+      },
+      "bed": {
+        "sku": "8324-1611-032",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-032",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 493111,
+    "products": {
+      "sofa": {
+        "sku": "8324-1216-001",
+        "price": 42499
+      },
+      "bed": {
+        "sku": "8324-1611-033",
+        "price": 19299
+      },
+      "chairs": {
+        "sku": "8324-1112-033",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492101,
+    "products": {
+      "sofa": {
+        "sku": "8324-1211-002",
+        "price": 12999
+      },
+      "bed": {
+        "sku": "8324-1611-034",
+        "price": 23399
+      },
+      "chairs": {
+        "sku": "8324-1112-034",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 492006,
+    "products": {
+      "sofa": {
+        "sku": "8324-1213-002",
+        "price": 23799
+      },
+      "bed": {
+        "sku": "8324-1611-035",
+        "price": 23399
+      },
+      "chairs": {
+        "sku": "8324-1112-035",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 491107,
+    "products": {
+      "sofa": {
+        "sku": "8324-1229-001",
+        "price": 11599
+      },
+      "bed": {
+        "sku": "8324-1611-036",
+        "price": 23399
+      },
+      "chairs": {
+        "sku": "8324-1112-036",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490036,
+    "products": {
+      "sofa": {
+        "sku": "8324-1230-001",
+        "price": 21099
+      },
+      "bed": {
+        "sku": "8324-1611-037",
+        "price": 23399
+      },
+      "chairs": {
+        "sku": "8324-1112-037",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 490002,
+    "products": {
+      "sofa": {
+        "sku": "8324-1231-001",
+        "price": 40099
+      },
+      "chairs": {
+        "sku": "8324-1112-038",
+        "price": null
+      }
+    }
+  },
+  {
+    "pincode": 491111,
+    "products": {
+      "sofa": {
+        "sku": "8324-1220-006",
+        "price": 23799
+      },
+      "chairs": {
+        "sku": "8324-1112-039",
+        "price": null
+      }
+    }
+    }
+  ]
