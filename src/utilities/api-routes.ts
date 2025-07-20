@@ -82,7 +82,8 @@ const ROUTES = {
   getFaqIdSearch: (search: any) => `/get-general-faq?search=${search}`,
   staticPage: (slug: any) => `/show-static-page?slug=${slug}`,
   accountRemoval: () => `/delete-user-request`,
-  razorpayOffers: (paymentId: string) => `https://api.razorpay.com/v1/payments/${paymentId}/?expand[]=offers`,
+  razorpayOffers: (paymentId: string) =>
+    `https://api.razorpay.com/v1/payments/${paymentId}/?expand[]=offers`,
 };
 
 export default ROUTES;

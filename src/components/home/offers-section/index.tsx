@@ -9,7 +9,7 @@ const OfferSection = ({ data }: any) => {
     bannerRouting(elem);
   };
 
-  console.log(data, 'sdhkjhdfs');
+  // console.log(data, 'sdhkjhdfs');
   return (
     <OfferSectionStyled className="offer-banner">
       <div className="container">

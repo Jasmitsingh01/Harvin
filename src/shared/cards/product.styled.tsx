@@ -45,4 +45,54 @@ export const ProductDetailWrapper = styled.div`
   &.product-item .product-detail .rating-wrap span {
     font-size: 14px;
   } */
+
+  /* Compact card styles */
+  &.compact-card {
+    .product-item {
+      .product-img {
+        height: 180px;
+        overflow: hidden;
+        border-radius: 8px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .product-detail {
+        padding: 12px 0;
+
+        .compact-name {
+          font-size: 14px !important;
+          line-height: 1.3;
+          margin: 8px 0 6px 0 !important;
+          color: #1a1a1a;
+          font-weight: 500;
+        }
+
+        .product-price-wrap {
+          .new-price {
+            font-size: 14px !important;
+            font-weight: 600;
+            color: #fb551d;
+          }
+
+          .old-price {
+            font-size: 12px !important;
+            margin: 0 4px 0 6px !important;
+          }
+
+          .discount {
+            font-size: 12px !important;
+            background: #e8f5e8;
+            color: #4caf4f;
+            padding: 2px 6px;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
 `;

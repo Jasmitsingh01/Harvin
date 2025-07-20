@@ -1,11 +1,10 @@
 import facebookIcon from '../../assets/images/facebook-icon.png';
 import twitter from '../../assets/images/twitter-icon.png';
-
 import youtube from '../../assets/images/youtube-icon.png';
-
 import linkedIN from '../../assets/images/linkdin-icon.png';
 import pingsta from '../../assets/images/pinterest.png';
 import insta from '../../assets/images/instagram-icon.png';
+import whatsapp from '../../assets/images/whatsapp.png';
 // import { FooterData } from '../../interface/common';
 
 export const socialMediya = [
@@ -21,6 +20,10 @@ export const socialMediya = [
   { icon: linkedIN, link: 'https://www.linkedin.com/company/harvinchairs' },
   { icon: pingsta, link: 'https://in.pinterest.com/harvinchairs/' },
   { icon: insta, link: 'https://www.instagram.com/harvin.chairs/' },
+  {
+    icon: whatsapp,
+    link: 'https://wa.me/919109056169?text=Hi%20there!%20I%20need%20help%20with%20furniture.',
+  },
 ];
 
 // export const footerData: FooterData | any = [

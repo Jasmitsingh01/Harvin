@@ -18,19 +18,18 @@ const Layout = (props: any) => {
         <Header />
         <main>{props?.children}</main>
         <Footer />
-        <a 
-          href="https://wa.me/919109056169"
-          className="callback-float"
-          target="_blank" 
+        <a
+          href="https://wa.me/919109056169?text=Hi%20there!%20I%20need%20help%20with%20furniture."
+          className="whatsapp-float"
+          target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with us on WhatsApp"
         >
-          <div className="callback-content">
-            <p className="callback-title">Request</p>
-            <div className="callback-icon">
-              <i className="fa-solid fa-phone"></i>
+          <div className="whatsapp-content">
+            <div className="whatsapp-icon">
+              <i className="fab fa-whatsapp"></i>
             </div>
-            <p className="callback-subtitle">Callback</p>
+            <p className="whatsapp-text">Chat with us</p>
           </div>
         </a>
       </AppProvider>

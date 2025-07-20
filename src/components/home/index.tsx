@@ -9,6 +9,9 @@ import OfferSection from './offers-section';
 import { BannerSectionStyled, SkeletonHomeBanner } from './styled';
 import ArrivalProducts from './arrival-products';
 import SellerProducts from './seller-products';
+// import EnhancedBestSellers from './enhanced-bestsellers';
+// import EnhancedNewArrivals from './enhanced-newarrivals';
+import FeaturedShowcase from './featured-showcase';
 import ROUTES from '../../utilities/api-routes';
 import useSWR from 'swr';
 import { fetcherSWR } from '../../services/api';
@@ -46,7 +49,7 @@ const Home = () => {
     fetcherSWR
   );
 
-  console.log(data, 'dahdjkh');
+  // console.log(data, 'dahdjkh');
 
   return (
     <>
@@ -79,11 +82,22 @@ const Home = () => {
         <TopFurniture loading={isLoading} />
         {/* <PromoSection isLoading={isLoading} data={data?.homebanner2} index={0} /> */}
         <PromoSection data={advertismentBanner} index={0} />
-        <SellerProducts loading={isLoading} />
+
+        {/* Enhanced Best Sellers Section */}
+        {/* <EnhancedBestSellers /> */}
+
         <CollectionSection
           data={data?.collections_in_focus}
           loading={isLoading}
         />
+
+        {/* Enhanced New Arrivals Section */}
+
+        {/* Featured Products Showcase */}
+        <FeaturedShowcase />
+
+        {/* Original sections for fallback */}
+        <SellerProducts loading={isLoading} />
         <ArrivalProducts />
         <OfferSection data={data?.homebanner3} />
       </main>

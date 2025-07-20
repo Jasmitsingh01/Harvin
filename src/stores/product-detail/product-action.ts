@@ -53,22 +53,22 @@ export const checkPincodeApi = async (payload: any) => {
     if (result.status) {
       // Store pincode data in local storage
       localStorage.setItem('pincode', payload.postcode);
-      
+
       // Get current product data for price update
       const { product } = getState();
       console.log('Product data for pincode update:', product);
       console.log('Pincode:', payload.postcode);
       console.log('Product reference_code:', product?.reference_code);
-      
+
       if (product?.reference_code) {
         const priceUpdate = getProductPriceByPincode(
           payload.postcode,
           product.reference_code,
           product.price || 0
         );
-        
+
         console.log('Price update result:', priceUpdate);
-        
+
         setState({
           pincodeBasedPrice: priceUpdate.updatedPrice,
           pincodeBasedSku: priceUpdate.sku,
@@ -84,9 +84,9 @@ export const checkPincodeApi = async (payload: any) => {
           testReferenceCode,
           product.price || 0
         );
-        
+
         console.log('Test price update result:', priceUpdate);
-        
+
         setState({
           pincodeBasedPrice: priceUpdate.updatedPrice,
           pincodeBasedSku: priceUpdate.sku,
@@ -225,7 +225,7 @@ export const getProduct = async (slug: string | any) => {
   });
   try {
     const { data: result } = await api.get(ROUTES.getProduct(slug));
-    
+
     // Load pincode-based prices if pincode exists in localStorage
     const storedPincode = localStorage.getItem('pincode');
     if (storedPincode) {
@@ -236,13 +236,13 @@ export const getProduct = async (slug: string | any) => {
         referenceCode,
         result.price || 0
       );
-      
+
       console.log('Loading pincode prices on product load:', {
         pincode: storedPincode,
         referenceCode,
-        priceUpdate
+        priceUpdate,
       });
-      
+
       setState({
         product: result,
         loading: false,

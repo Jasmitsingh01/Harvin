@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { ProductDetailWrapper } from './product.styled';
 import Rating from '../rating/Rating';
 import CardPrices from './CardPrices';
-const CardView = ({ product, key }: any) => {
+const CardView = ({ product, key, compact = false }: any) => {
   const router = useRouter();
   const [index, setIndex] = React.useState(0);
   const [isZoomed, setIsZoomed] = React.useState(false);
@@ -27,7 +27,7 @@ const CardView = ({ product, key }: any) => {
 
   return (
     <ProductDetailWrapper
-      className="w-100"
+      className={`w-100 ${compact ? 'compact-card' : ''}`}
       key={key}
       onClick={(e) => {
         e.stopPropagation();
@@ -48,18 +48,25 @@ const CardView = ({ product, key }: any) => {
           />
         </div>
         <div className="product-detail">
-          <h3 className="product-name">{product?.name}</h3>
+          <h3 className={`product-name ${compact ? 'compact-name' : ''}`}>
+            {compact
+              ? product?.name?.substring(0, 50) +
+                (product?.name?.length > 50 ? '...' : '')
+              : product?.name}
+          </h3>
           <CardPrices prices={product?.product_combination_short[0]} />
-          <div className="rating-wrap d-flex align-items-center">
-            <Rating
-              rating={product?.ratings}
-              ratingcount={product?.rating_count}
-              reviews={product?.reviews}
-              totalReview={product?.total_reviews}
-              className={'rating-star d-flex align-items-center'}
-              detail={false}
-            />
-          </div>
+          {!compact && (
+            <div className="rating-wrap d-flex align-items-center">
+              <Rating
+                rating={product?.ratings}
+                ratingcount={product?.rating_count}
+                reviews={product?.reviews}
+                totalReview={product?.total_reviews}
+                className={'rating-star d-flex align-items-center'}
+                detail={false}
+              />
+            </div>
+          )}
         </div>
       </div>
     </ProductDetailWrapper>
