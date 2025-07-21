@@ -27,7 +27,8 @@ const nextConfig = {
       'https://harvin.indapoint.org',
       'https://harvin.theclosedoor.com',
       'https://api.harvinchairs.com',
-      'api.harvinchairs.com'
+      'api.harvinchairs.com',
+      'images.unsplash.com'
     ],
   },
   typescript: {
