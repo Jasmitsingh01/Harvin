@@ -20,6 +20,11 @@ export const INTIAL_STATE = {
   productCountAttributes: {},
   priceAttributesCounts: {},
   discountAttributesCounts: {},
+  // Infinite scroll specific state
+  displayedItems: [],
+  itemsPerPage: 8,
+  hasMoreItems: true,
+  isLoadingMore: false,
 };
 
 export const useProductListingStore = create(() => ({
@@ -36,6 +41,10 @@ export const useProductListingData = () => {
     moreFilterSlider: s.moreFilterSlider,
     moreFilterList: s.moreFilterList,
     currentPage: s.currentPage,
+    displayedItems: s.displayedItems,
+    itemsPerPage: s.itemsPerPage,
+    hasMoreItems: s.hasMoreItems,
+    isLoadingMore: s.isLoadingMore,
   }));
 };
 

@@ -18,19 +18,15 @@ import {
 } from '../../../stores/cart/cart-store';
 // import { Button } from 'react-bootstrap';
 // import { useOrderData } from '../../../stores/orders/order-store';
-import { orderPayment, postOrder } from '../../../stores/orders/order-action';
+import { postOrder } from '../../../stores/orders/order-action';
 import { useRouter } from 'next/router';
 // import { getCartItems } from '../../../stores/cart/cart-action';
-import useRazorpay from 'react-razorpay';
-import { RazorPayMethodEnum } from '../../../enums';
-import { currentUser } from '../../../utilities/helper';
 import { useCoupon } from '../../../stores/coupon/coupon-store';
 import { toast } from 'react-toastify';
 
 const PaymentBlock = () => {
-  const [Razorpay] = useRazorpay();
   const [activeAccordion, setActiveAccordion] = useState<any>(null);
-  const [paymentMethod, setPaymentMethod] = useState(RazorPayMethodEnum.card);
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [showCouponList, setShowCouponList] = useState<boolean>(false);
   const { t } = useTranslation();
   const { coupon } = useCoupon();
@@ -55,60 +51,13 @@ const PaymentBlock = () => {
     setPaymentMethod(tab);
   };
 
-  const handleRediect = (url) => {
-    router.push(`/thankyou?p=${url}`);
-  };
-
-  const handlePayment = useCallback(
-    (data: any, encodeUrl: any) => {
-      const { payment_id, amount, currency } =
-        data?.payment_intent?.payment_intent_info || {};
-      const user = currentUser();
-
-      const options: any = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
-        secret: process.env.NEXT_PUBLIC_RAZORPAY_SECRET,
-        amount: data.paid_total || amount,
-        currency: currency,
-        name: t('appName'),
-        description: t('appDesciption'),
-        image:
-          'https://harvin-app-8eef8ed6fa4d.herokuapp.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fharvin-chairs-logo.96345865.png&w=1920&q=75',
-        order_id: payment_id,
-        handler: (response) => {
-          orderPayment(response, data);
-          handleRediect(encodeUrl);
-        },
-        prefill: {
-          name: data.customer_name,
-          email: user.email,
-          contact: user.phone,
-          method: paymentMethod,
-        },
-        notes: {
-          address: 'Razorpay Corporate Office',
-        },
-        theme: {
-          color: '#3399cc',
-        },
-        // modal: {
-        //   ondismiss: function () {},
-        // },
-        ondismiss: function () {
-          // Display a toast notification to the user
-          toast.error('Payment cancelled by user');
-          // You can also trigger any necessary cleanup or actions here
-        },
-      };
-      const rzpay = new Razorpay(options);
-
-      rzpay.open();
-      rzpay.on('payment.failed', function (response) {
-        orderPayment(response, data);
-      });
-    },
-    [Razorpay, paymentMethod]
-  );
+  const handlePayment = useCallback(() => {
+    // Payment processing removed - Razorpay integration was removed
+    // This would need to be replaced with alternative payment gateway
+    toast.info('Payment processing not configured');
+    // For now, just show success message
+    toast.success('Order placed successfully!');
+  }, [paymentMethod]);
 
   const handleProceedToPayment = () => {
     let dataToPost;
@@ -133,7 +82,7 @@ const PaymentBlock = () => {
         paid_total: subtotalSum,
         total: 1239,
         customer_contact: selectedAddress?.mobile_number,
-        payment_gateway: 'RAZORPAY',
+        payment_gateway: 'OTHER',
         billing_address: selectedAddress?.id,
         shipping_address: selectedAddress?.id,
         cart_id: cartItems[0]?.cart_id,
@@ -181,7 +130,7 @@ const PaymentBlock = () => {
             ? selectedProduct?.discounted_price.discounted_price
             : selectedProduct.price),
         customer_contact: selectedAddress?.mobile_number,
-        payment_gateway: 'RAZORPAY',
+        payment_gateway: 'OTHER',
         billing_address: selectedAddress?.id,
         shipping_address: selectedAddress?.id,
         cart_id: null,
@@ -214,13 +163,9 @@ const PaymentBlock = () => {
                 <div className="accordion-item">
                   <h2 className="accordion-header">
                     <button
-                      onClick={() =>
-                        handleAccordionClick(RazorPayMethodEnum.card)
-                      }
+                      onClick={() => handleAccordionClick('card')}
                       className={`accordion-button ${
-                        activeAccordion === RazorPayMethodEnum.card
-                          ? ''
-                          : 'collapsed'
+                        activeAccordion === 'card' ? '' : 'collapsed'
                       }`}
                       type="button"
                       data-bs-toggle="collapse"
@@ -232,7 +177,7 @@ const PaymentBlock = () => {
                         <div className="payment-name">
                           <input
                             type="radio"
-                            checked={paymentMethod === RazorPayMethodEnum.card}
+                            checked={paymentMethod === 'card'}
                           />
                           <ProgressiveImage src={cartimg} alt="" />
                           <h5>Card</h5>
@@ -248,13 +193,9 @@ const PaymentBlock = () => {
                 <div className="accordion-item">
                   <h2 className="accordion-header">
                     <button
-                      onClick={() =>
-                        handleAccordionClick(RazorPayMethodEnum.netbanking)
-                      }
+                      onClick={() => handleAccordionClick('netbanking')}
                       className={`accordion-button ${
-                        activeAccordion === RazorPayMethodEnum.netbanking
-                          ? ''
-                          : 'collapsed'
+                        activeAccordion === 'netbanking' ? '' : 'collapsed'
                       }`}
                       type="button"
                       data-bs-toggle="collapse"
@@ -266,9 +207,7 @@ const PaymentBlock = () => {
                         <div className="payment-name">
                           <input
                             type="radio"
-                            checked={
-                              paymentMethod === RazorPayMethodEnum.netbanking
-                            }
+                            checked={paymentMethod === 'netbanking'}
                           />
                           <img src="assets/images/card-icon.png" alt="" />
                           <h5>Netbanking</h5>
@@ -287,13 +226,9 @@ const PaymentBlock = () => {
                 <div className="accordion-item">
                   <h2 className="accordion-header">
                     <button
-                      onClick={() =>
-                        handleAccordionClick(RazorPayMethodEnum.upi)
-                      }
+                      onClick={() => handleAccordionClick('upi')}
                       className={`accordion-button ${
-                        activeAccordion === RazorPayMethodEnum.upi
-                          ? ''
-                          : 'collapsed'
+                        activeAccordion === 'upi' ? '' : 'collapsed'
                       }`}
                       type="button"
                       data-bs-toggle="collapse"
@@ -305,7 +240,7 @@ const PaymentBlock = () => {
                         <div className="payment-name">
                           <input
                             type="radio"
-                            checked={paymentMethod === RazorPayMethodEnum.upi}
+                            checked={paymentMethod === 'upi'}
                           />
                           <img src="assets/images/upi-icon.png" alt="" />
                           <h5>UPI</h5>
@@ -376,9 +311,7 @@ const PaymentBlock = () => {
                 <div className="accordion-item">
                   <h2 className="accordion-header">
                     <button
-                      onClick={() =>
-                        handleAccordionClick(RazorPayMethodEnum.wallet)
-                      }
+                      onClick={() => handleAccordionClick('wallet')}
                       className="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
@@ -390,9 +323,7 @@ const PaymentBlock = () => {
                         <div className="payment-name">
                           <input
                             type="radio"
-                            checked={
-                              paymentMethod === RazorPayMethodEnum.wallet
-                            }
+                            checked={paymentMethod === 'wallet'}
                           />
                           <img src="assets/images/wallet-icon.png" alt="" />
                           <h5>Wallet</h5>
@@ -480,15 +411,13 @@ const PaymentBlock = () => {
                       data-bs-target="#emi-option"
                       aria-expanded="false"
                       aria-controls="flush-collapseOne"
-                      onClick={() =>
-                        handleAccordionClick(RazorPayMethodEnum.emi)
-                      }
+                      onClick={() => handleAccordionClick('emi')}
                     >
                       <div className="payment-name-option-wrap">
                         <div className="payment-name">
                           <input
                             type="radio"
-                            checked={paymentMethod === RazorPayMethodEnum.emi}
+                            checked={paymentMethod === 'emi'}
                           />
                           <img src="assets/images/emi-icon.png" alt="" />
                           <h5>EMI</h5>

@@ -69,7 +69,6 @@ const ROUTES = {
     page ? `/orders?page=${page}` : `/orders`,
   reviewMedia: () => `/reviews/media`,
   orderPayment: () => `/orders/payment`,
-
   applyCoupon: () => `/coupons/apply`,
   verifyCoupon: () => `/coupons/verify`,
   styleShowcase: (id: any) => `/style-showcase/${id}`,
@@ -82,8 +81,6 @@ const ROUTES = {
   getFaqIdSearch: (search: any) => `/get-general-faq?search=${search}`,
   staticPage: (slug: any) => `/show-static-page?slug=${slug}`,
   accountRemoval: () => `/delete-user-request`,
-  razorpayOffers: (paymentId: string) =>
-    `https://api.razorpay.com/v1/payments/${paymentId}/?expand[]=offers`,
 };
 
 export default ROUTES;

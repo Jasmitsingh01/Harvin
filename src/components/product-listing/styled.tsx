@@ -49,6 +49,65 @@ export const PaginationStyled = styled.div`
 `;
 
 export const ProductListingStyled = styled.section`
+  /* Show More Button styles */
+  .show-more-section {
+    padding: 40px 0 20px 0;
+    text-align: center;
+
+    .show-more-btn {
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 500;
+      border: 2px solid #fb551d;
+      color: #fb551d;
+      background: white;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover:not(:disabled) {
+        background: #fb551d;
+        color: white;
+        border-color: #fb551d;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .show-more-info {
+      margin: 15px 0 0 0;
+      font-size: 14px;
+      color: #666;
+      font-weight: 400;
+    }
+  }
+
+  .loading-more-container {
+    padding: 20px 0;
+
+    .product-listing-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+  }
+
+  .end-of-results {
+    padding: 20px 0;
+    text-align: center;
+
+    p {
+      margin: 0;
+      padding: 20px 0;
+      color: #666;
+      font-style: italic;
+    }
+  }
+
   /* .product-listing-section{ */
   /* padding: 20px 0 20px 0; */
   /* } */

@@ -32,7 +32,7 @@ import { loginModalOpen, setModalType } from '../../stores/user/user-action';
 
 import { addLastViewedItem } from '../../stores/last-viewed/last-action';
 import { CouponRemoveData } from '../../stores/coupon/coupon-action';
-import Offers from './Offers';
+
 // import { useLastViewedItmes } from '../../stores/last-viewed/last-store';
 
 const ToggelSideBarNav = dynamic(() => import('./sidebar-dropdown'), {
@@ -150,6 +150,40 @@ const ProductDetailPage = (props: any) => {
     await buyNow(selectedProductData, router);
   };
 
+  const handleWhatsAppRedirect = () => {
+    // Get product details
+    const productName = result?.name || 'Product';
+    const productPrice =
+      selectedProduct?.discounted_price?.discounted_price ||
+      selectedProduct?.price ||
+      'N/A';
+    const productUrl = window.location.href;
+
+    // Create WhatsApp message
+    const message = `Hi! I'm interested in EMI options for this product:
+
+*Product:* ${productName}
+*Price:* ₹${productPrice}
+*Product Link:* ${productUrl}
+
+I would like to know about EMI options available for this product. Please provide me with the details.
+
+Thank you!`;
+
+    // Encode the message for URL
+    const encodedMessage = encodeURIComponent(message);
+
+    // WhatsApp URL (you can replace with your business WhatsApp number)
+    const whatsappNumber = '+919109056169'; // Replace with your actual WhatsApp business number
+    const whatsappUrl = `https://wa.me/${whatsappNumber.replace(
+      '+',
+      ''
+    )}?text=${encodedMessage}`;
+
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <>
       <ShareProduct
@@ -265,15 +299,27 @@ const ProductDetailPage = (props: any) => {
                   handleBuy={removeCouponAndBuyNow}
                 />
 
-                {/* Offers Section */}
-                <Offers
-                  productPrice={
-                    selectedProduct?.discounted_price?.discounted_price ||
-                    selectedProduct?.price ||
-                    0
-                  }
-                  productId={result?.id?.toString() || ''}
-                />
+                {/* EMI Options Section */}
+                <div
+                  className="emi-options-section"
+                  onClick={() => handleWhatsAppRedirect()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleWhatsAppRedirect();
+                    }
+                  }}
+                >
+                  <div className="emi-text">
+                    <i className="fa-brands fa-whatsapp emi-icon"></i>
+                    <span className="emi-message">
+                      EMI OPTIONS ARE AVAILABLE - Contact on WhatsApp
+                    </span>
+                  </div>
+                </div>
+
+                {/* Offers Section - Removed Razorpay offers integration */}
 
                 <ToggelSideBarNav />
               </div>

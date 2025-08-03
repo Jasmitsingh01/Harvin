@@ -442,4 +442,83 @@ export const ProductDetail = styled.div`
     left: 0;
     transform: translate(0, 0);
   }*/
+
+  /* EMI Options Section Styles */
+  .emi-options-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .emi-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      .emi-icon {
+        font-size: 20px;
+        color: white;
+        animation: pulse 2s infinite;
+      }
+
+      .emi-message {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      background: linear-gradient(135deg, #22c55e 0%, #16a085 100%);
+
+      .emi-icon {
+        animation-duration: 1s;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2);
+    }
+
+    &:focus {
+      outline: 2px solid #25d366;
+      outline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .emi-options-section {
+      margin: 15px 0;
+      padding: 12px;
+
+      .emi-text .emi-message {
+        font-size: 13px;
+      }
+
+      .emi-text .emi-icon {
+        font-size: 18px;
+      }
+    }
+  }
 `;

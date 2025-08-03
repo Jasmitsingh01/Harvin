@@ -264,6 +264,15 @@ export const filterProductsData = (
   setState({
     productList: [...updatedProductList],
   });
+
+  // Initialize displayed items for infinite scroll
+  const { itemsPerPage } = getState();
+  const initialItems = updatedProductList.slice(0, itemsPerPage);
+  setState({
+    displayedItems: initialItems,
+    hasMoreItems: updatedProductList.length > itemsPerPage,
+    isLoadingMore: false,
+  });
 };
 
 export const filterData = (
@@ -393,4 +402,50 @@ export const updateCurrentPage = (page) => {
 
 export const openCloseSidebarModal = (value) => {
   setState({ sidebarModal: value });
+};
+
+// Infinite scroll actions
+export const initializeDisplayedItems = (productList: any[]) => {
+  const { itemsPerPage } = getState();
+  const initialItems = productList.slice(0, itemsPerPage);
+  setState({
+    displayedItems: initialItems,
+    hasMoreItems: productList.length > itemsPerPage,
+    isLoadingMore: false,
+  });
+};
+
+export const loadMoreItems = () => {
+  const { productList, displayedItems, itemsPerPage, isLoadingMore } =
+    getState();
+
+  if (isLoadingMore || displayedItems.length >= productList.length) {
+    return;
+  }
+
+  setState({ isLoadingMore: true });
+
+  // Simulate loading delay for better UX
+  setTimeout(() => {
+    const currentLength = displayedItems.length;
+    const nextItems = productList.slice(
+      currentLength,
+      currentLength + itemsPerPage
+    );
+    const newDisplayedItems = [...displayedItems, ...nextItems];
+
+    setState({
+      displayedItems: newDisplayedItems,
+      hasMoreItems: newDisplayedItems.length < productList.length,
+      isLoadingMore: false,
+    });
+  }, 500);
+};
+
+export const resetInfiniteScroll = () => {
+  setState({
+    displayedItems: [],
+    hasMoreItems: true,
+    isLoadingMore: false,
+  });
 };

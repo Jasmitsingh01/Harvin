@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import ListHeader from './ListHeader';
 import BreadCrumbs from '../../shared/breadcrumbs';
-import { PaginationStyled, ProductListingStyled } from './styled';
+import { ProductListingStyled } from './styled';
 import FilterProductSection from '../../shared/filtered-section';
 import PromoSection from '../promo-section';
 import promoImg from '../../assets/images/emi-banner.jpg';
@@ -9,13 +9,13 @@ import Card from './Card';
 import useSWR from 'swr';
 import ROUTES from '../../utilities/api-routes';
 import { fetcherSWR } from '../../services/api';
-import Pagination from 'react-js-pagination';
 import { isEmpty, range } from 'lodash';
 // import NoDataAvailable from '../../shared/common/NoDataAvailable';
 import { Skeleton } from '@mui/material';
 import {
   filterData,
-  updateCurrentPage,
+  loadMoreItems,
+  initializeDisplayedItems,
 } from '../../stores/product-listing/product-listing-action';
 import { decryptUrlForFilter, getIdFromParams } from '../../utilities/helper';
 import { useProductListingData } from '../../stores/product-listing/product-listing-store';
@@ -50,20 +50,20 @@ const ProductListing = ({ id }: any) => {
     fetcherSWR
   );
 
-  const { productList, currentPage } = useProductListingData();
+  const { productList, displayedItems, hasMoreItems, isLoadingMore } =
+    useProductListingData();
 
   const isProductListLoading = isEmpty(data?.productList) && !error;
 
   const isLoadingAttributes = !attributesData;
   const isLoadingProducts = !data && !error;
 
-  const itemsPerPage = 8 || 0;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedItems = productList?.slice(startIndex, endIndex) || [];
-  const handlePageChange = (newPage) => {
-    updateCurrentPage(newPage);
-  };
+  // Show more button callback
+  const handleShowMore = useCallback(() => {
+    if (hasMoreItems && !isLoadingMore) {
+      loadMoreItems();
+    }
+  }, [hasMoreItems, isLoadingMore]);
 
   // const isLoading = isEmpty(data?.productList) && !error;
 
@@ -71,6 +71,13 @@ const ProductListing = ({ id }: any) => {
     const decryptData = decryptUrlForFilter(window.location.href);
     filterData(decryptData, data?.productList, attributesData);
   }, [window.location.href, isLoading, isLoadingAttributes, isLoadingProducts]);
+
+  // Initialize displayed items when productList changes
+  useEffect(() => {
+    if (productList && productList.length > 0) {
+      initializeDisplayedItems(productList);
+    }
+  }, [productList]);
 
   if (isLoadingAttributes || isLoadingProducts) {
     return <Loading />;
@@ -138,21 +145,53 @@ const ProductListing = ({ id }: any) => {
         ) : null}
 
         <PromoSection img={promoImg} index={0} />
-        <PaginationStyled>
-          {displayedItems.length > 0 && (
-            <Pagination
-              activePage={currentPage}
-              itemsCountPerPage={itemsPerPage}
-              totalItemsCount={productList?.length || 0}
-              pageRangeDisplayed={5}
-              onChange={handlePageChange}
-              itemClass={'page-item'}
-              innerClass="pagination"
-              activeClass="active"
-              linkClass="page-link"
-            />
-          )}
-        </PaginationStyled>
+        {/* Show More Button Section */}
+        {hasMoreItems && displayedItems.length > 0 && (
+          <div className="show-more-section">
+            <div className="container">
+              <div className="text-center">
+                <button
+                  className="btn btn-outline-primary show-more-btn"
+                  onClick={handleShowMore}
+                  disabled={isLoadingMore}
+                >
+                  {isLoadingMore ? 'Loading...' : 'Show More Products'}
+                </button>
+                <p className="show-more-info">
+                  Showing {displayedItems.length} of {productList?.length || 0}{' '}
+                  products
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Loading indicator when loading more */}
+        {isLoadingMore && (
+          <div className="loading-more-container">
+            <div className="container">
+              <div className="product-listing-wrap">
+                <SliderSkeleton value={4} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* End of results indicator */}
+        {!hasMoreItems && displayedItems.length > 0 && (
+          <div className="end-of-results">
+            <div className="container">
+              <div className="text-center">
+                <p
+                  className="text-16 weight-500"
+                  style={{ padding: '20px 0', color: '#666' }}
+                >
+                  All products displayed ({displayedItems.length} total)
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </ProductListingStyled>
   );

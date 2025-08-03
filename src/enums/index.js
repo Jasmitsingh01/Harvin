@@ -13,11 +13,3 @@ export const ModalTypeEnum = {
   gotit: 'gotit',
   verifyotpregister: 'verifyotpregister',
 };
-
-export const RazorPayMethodEnum = {
-  card: 'card',
-  netbanking: 'netbanking',
-  wallet: 'wallet',
-  emi: 'emi',
-  upi: 'upi',
-};

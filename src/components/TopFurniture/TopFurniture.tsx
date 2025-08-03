@@ -16,7 +16,7 @@ const TopFurniture = ({ loading }: any) => {
     fetcherSWR
   );
   const { t } = useTranslation();
-
+  console.log(data, 'HRVANIN SERVER TOP CATEGORYS');
   // Static/hardcoded categories with Unsplash images
   const staticCategories = [
     {
