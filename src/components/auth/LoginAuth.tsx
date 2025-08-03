@@ -3,7 +3,7 @@ import React from 'react';
 import social from '../../assets/images/google.png';
 import ProgressiveImage from '../../shared/progressive-image';
 import { useGoogleLogin } from '@react-oauth/google';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from '@greatsumini/react-facebook-login';
 import { SocialAuth } from '../../interface/common';
 import { loginAuthAction } from '../../stores/user/user-action';
 
@@ -38,12 +38,10 @@ const LoginAuth = () => {
 
       <FacebookLogin
         appId={facebookClientID}
-        autoLoad={false}
+        onSuccess={responseFacebook}
+        onFail={(error) => console.error('Facebook login failed:', error)}
         fields="name,email,picture"
-        callback={responseFacebook}
-        cssClass="custom-facebook-button"
-        icon="fa-facebook"
-        textButton=""
+        className="custom-facebook-button"
       />
     </div>
   );
