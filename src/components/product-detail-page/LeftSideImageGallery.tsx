@@ -124,10 +124,10 @@ const LeftSideImageGallery = ({ images, video, cover_image }: any) => {
   const handlePlayPauseClick = () => {
     const video = document.querySelector('video') as HTMLVideoElement;
     // const video = document.querySelector('video');
-    if (video.paused) {
+    if (video && video.paused) {
       video.play();
       setIsPlaying(true);
-    } else {
+    } else if (video) {
       video.pause();
       setIsPlaying(false);
     }
