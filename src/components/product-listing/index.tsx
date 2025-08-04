@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import ListHeader from './ListHeader';
 import BreadCrumbs from '../../shared/breadcrumbs';
 import { ProductListingStyled } from './styled';
@@ -40,6 +40,9 @@ export const SliderSkeleton = ({ value }: { value: number }): any => (
 
 const ProductListing = ({ id }: any) => {
   const routeID = getIdFromParams(id);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadingRef = useRef<HTMLDivElement>(null);
+
   const { data: attributesData } = useSWR(
     ROUTES.attributeFilter(routeID),
     fetcherSWR
@@ -58,8 +61,8 @@ const ProductListing = ({ id }: any) => {
   const isLoadingAttributes = !attributesData;
   const isLoadingProducts = !data && !error;
 
-  // Show more button callback
-  const handleShowMore = useCallback(() => {
+  // Infinite scroll callback
+  const handleLoadMore = useCallback(() => {
     if (hasMoreItems && !isLoadingMore) {
       loadMoreItems();
     }
@@ -78,6 +81,33 @@ const ProductListing = ({ id }: any) => {
       initializeDisplayedItems(productList);
     }
   }, [productList]);
+
+  // Set up intersection observer for infinite scroll
+  useEffect(() => {
+    if (loadingRef.current && hasMoreItems && !isLoadingMore) {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          if (entry.isIntersecting) {
+            handleLoadMore();
+          }
+        },
+        {
+          root: null,
+          rootMargin: '100px', // Start loading 100px before the element is visible
+          threshold: 0.1,
+        }
+      );
+
+      observerRef.current.observe(loadingRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [hasMoreItems, isLoadingMore, handleLoadMore]);
 
   if (isLoadingAttributes || isLoadingProducts) {
     return <Loading />;
@@ -145,30 +175,10 @@ const ProductListing = ({ id }: any) => {
         ) : null}
 
         <PromoSection img={promoImg} index={0} />
-        {/* Show More Button Section */}
-        {hasMoreItems && displayedItems.length > 0 && (
-          <div className="show-more-section">
-            <div className="container">
-              <div className="text-center">
-                <button
-                  className="btn btn-outline-primary show-more-btn"
-                  onClick={handleShowMore}
-                  disabled={isLoadingMore}
-                >
-                  {isLoadingMore ? 'Loading...' : 'Show More Products'}
-                </button>
-                <p className="show-more-info">
-                  Showing {displayedItems.length} of {productList?.length || 0}{' '}
-                  products
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {/* Loading indicator when loading more */}
-        {isLoadingMore && (
-          <div className="loading-more-container">
+        {/* Infinite scroll loading indicator */}
+        {hasMoreItems && displayedItems.length > 0 && (
+          <div ref={loadingRef} className="infinite-scroll-loading">
             <div className="container">
               <div className="product-listing-wrap">
                 <SliderSkeleton value={4} />
