@@ -69,10 +69,19 @@ export const checkPincodeApi = async (payload: any) => {
 
         console.log('Price update result:', priceUpdate);
 
+        // Enhanced feedback based on exact SKU matching
+        let successMessage = result.message || 'Pincode validated successfully';
+        if (priceUpdate.skuChanged) {
+          successMessage = `Exact SKU match required. Available SKU: ${priceUpdate.sku}, Your SKU: ${priceUpdate.originalSku}`;
+        } else if (priceUpdate.isAvailable) {
+          successMessage = `Exact SKU match found. Price updated to: ${priceUpdate.updatedPrice}`;
+        }
+
         setState({
           pincodeBasedPrice: priceUpdate.updatedPrice,
           pincodeBasedSku: priceUpdate.sku,
           isPincodePriceAvailable: priceUpdate.isAvailable,
+          pincodeSuccess: successMessage,
         });
       } else {
         console.log('No reference_code found in product');
@@ -91,6 +100,8 @@ export const checkPincodeApi = async (payload: any) => {
           pincodeBasedPrice: priceUpdate.updatedPrice,
           pincodeBasedSku: priceUpdate.sku,
           isPincodePriceAvailable: priceUpdate.isAvailable,
+          pincodeSuccess:
+            priceUpdate.message || 'Pincode validated successfully',
         });
       }
     }

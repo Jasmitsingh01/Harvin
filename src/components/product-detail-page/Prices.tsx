@@ -3,6 +3,7 @@ import ProgressiveImage from '../../shared/progressive-image';
 
 import { priceWithCurrency } from '../../utilities/helper';
 import { usePincodeBasedPrice } from '../../stores/product-detail/product-store';
+
 // import { useSelectedProductCombination } from '../../stores/product-detail/product-store';
 
 const Prices = ({ selectedProduct, result }: any) => {
@@ -67,6 +68,9 @@ const Prices = ({ selectedProduct, result }: any) => {
             style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}
           >
             Pincode Price • SKU: {pincodeBasedSku}
+            <span style={{ color: '#28a745', marginLeft: '8px' }}>
+              (Exact Match)
+            </span>
           </p>
         )}
       </div>

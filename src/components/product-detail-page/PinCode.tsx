@@ -138,7 +138,20 @@ const PinCode = ({
               fontWeight: '500',
             }}
           >
-            ✓ Product available at this pincode
+            ✓ Exact SKU match found - Price updated
+          </p>
+        )}
+        {!isPincodePriceAvailable && isPincodeEnter && (
+          <p
+            className="pincode-unavailable"
+            style={{
+              fontSize: '12px',
+              color: '#dc3545',
+              marginTop: '5px',
+              fontWeight: '500',
+            }}
+          >
+            ✗ Exact SKU match required - Product not available
           </p>
         )}
       </div>

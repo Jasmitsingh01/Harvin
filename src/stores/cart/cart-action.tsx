@@ -578,6 +578,7 @@ export const updateCartPricesByPincode = (pincode: number) => {
   const { cartItems, selectedProduct } = getState();
   const pincodeBasedPrices: { [key: string]: number } = {};
   const pincodeBasedSkus: { [key: string]: string } = {};
+  const skuChangeMessages: { [key: string]: string } = {};
 
   // Update cart items prices
   cartItems.forEach((item: any) => {
@@ -591,6 +592,11 @@ export const updateCartPricesByPincode = (pincode: number) => {
       if (priceUpdate.isAvailable && priceUpdate.updatedPrice) {
         pincodeBasedPrices[item.id] = priceUpdate.updatedPrice;
         pincodeBasedSkus[item.id] = priceUpdate.sku || '';
+        
+        // Store SKU mismatch message if applicable
+        if (priceUpdate.skuChanged) {
+          skuChangeMessages[item.id] = priceUpdate.message || '';
+        }
       }
     }
   });
@@ -606,11 +612,21 @@ export const updateCartPricesByPincode = (pincode: number) => {
     if (priceUpdate.isAvailable && priceUpdate.updatedPrice) {
       pincodeBasedPrices['selectedProduct'] = priceUpdate.updatedPrice;
       pincodeBasedSkus['selectedProduct'] = priceUpdate.sku || '';
+
+      // Store SKU mismatch message if applicable
+      if (priceUpdate.skuChanged) {
+        skuChangeMessages['selectedProduct'] = priceUpdate.message || '';
+      }
     }
   }
 
   // Store pincode in localStorage for persistence
   localStorage.setItem('pincode', pincode.toString());
+
+  // Log SKU mismatches for debugging
+  if (Object.keys(skuChangeMessages).length > 0) {
+    console.log('SKU mismatches detected:', skuChangeMessages);
+  }
 
   setState({
     pincodeBasedPrices,
