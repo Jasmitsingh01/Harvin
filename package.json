@@ -28,10 +28,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@greatsumini/react-facebook-login": "^3.3.3",
     "@hookform/resolvers": "^3.3.2",
     "@mui/material": "^5.14.17",
     "@react-oauth/google": "^0.12.1",
-
     "axios": "^1.0.0",
     "bootstrap": "^5.3.2",
     "concurrently": "^8.2.2",
@@ -55,17 +55,15 @@
     "react-cookienotice": "^6.0.3",
     "react-dom": "18.2.0",
     "react-error-boundary": "^4.0.11",
-    "@greatsumini/react-facebook-login": "^3.3.3",
+    "react-facebook-login": "^4.1.1",
     "react-hook-form": "^7.49.2",
     "react-html-parser": "^2.0.2",
     "react-i18next": "^12.2.2",
-
     "react-js-pagination": "^3.0.3",
     "react-modal": "^3.16.1",
     "react-otp-input": "^3.1.1",
     "react-player": "^2.16.0",
     "react-rating-stars-component": "^2.2.0",
-
     "react-scroll": "^1.9.0",
     "react-share": "^5.0.3",
     "react-slick": "^0.29.0",

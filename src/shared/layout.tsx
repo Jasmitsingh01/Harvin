@@ -24,6 +24,12 @@ const Layout = (props: any) => {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with us on WhatsApp"
+          style={{
+            width: 'fit-content',
+            height: 'fit-content',
+            display: 'block',
+            padding: '20px 10px',
+          }}
         >
           <div className="whatsapp-content">
             <div className="whatsapp-icon">
