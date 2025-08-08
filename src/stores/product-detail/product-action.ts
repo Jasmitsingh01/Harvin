@@ -56,8 +56,11 @@ export const checkPincodeApi = async (payload: any) => {
 
       // Get current product data for price update
       const { product } = getState();
+      // eslint-disable-next-line no-console
       console.log('Product data for pincode update:', product);
+      // eslint-disable-next-line no-console
       console.log('Pincode:', payload.postcode);
+      // eslint-disable-next-line no-console
       console.log('Product reference_code:', product?.reference_code);
 
       if (product?.reference_code) {
@@ -67,15 +70,11 @@ export const checkPincodeApi = async (payload: any) => {
           product.price || 0
         );
 
+        // eslint-disable-next-line no-console
         console.log('Price update result:', priceUpdate);
 
         // Enhanced feedback based on exact SKU matching
-        let successMessage = result.message || 'Pincode validated successfully';
-        if (priceUpdate.skuChanged) {
-          successMessage = `Exact SKU match required. Available SKU: ${priceUpdate.sku}, Your SKU: ${priceUpdate.originalSku}`;
-        } else if (priceUpdate.isAvailable) {
-          successMessage = `Exact SKU match found. Price updated to: ${priceUpdate.updatedPrice}`;
-        }
+        const successMessage = result.message || 'Pincode validated successfully';
 
         setState({
           pincodeBasedPrice: priceUpdate.updatedPrice,
@@ -84,6 +83,7 @@ export const checkPincodeApi = async (payload: any) => {
           pincodeSuccess: successMessage,
         });
       } else {
+        // eslint-disable-next-line no-console
         console.log('No reference_code found in product');
         // For testing, let's try with a default reference code for chairs
         // In production, this should be set properly in the product data
@@ -94,14 +94,13 @@ export const checkPincodeApi = async (payload: any) => {
           product.price || 0
         );
 
+        // eslint-disable-next-line no-console
         console.log('Test price update result:', priceUpdate);
 
         setState({
           pincodeBasedPrice: priceUpdate.updatedPrice,
           pincodeBasedSku: priceUpdate.sku,
           isPincodePriceAvailable: priceUpdate.isAvailable,
-          pincodeSuccess:
-            priceUpdate.message || 'Pincode validated successfully',
         });
       }
     }
@@ -248,7 +247,8 @@ export const getProduct = async (slug: string | any) => {
         result.price || 0
       );
 
-      console.log('Loading pincode prices on product load:', {
+              // eslint-disable-next-line no-console
+        console.log('Loading pincode prices on product load:', {
         pincode: storedPincode,
         referenceCode,
         priceUpdate,

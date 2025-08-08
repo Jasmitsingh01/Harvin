@@ -592,10 +592,10 @@ export const updateCartPricesByPincode = (pincode: number) => {
       if (priceUpdate.isAvailable && priceUpdate.updatedPrice) {
         pincodeBasedPrices[item.id] = priceUpdate.updatedPrice;
         pincodeBasedSkus[item.id] = priceUpdate.sku || '';
-        
+
         // Store SKU mismatch message if applicable
-        if (priceUpdate.skuChanged) {
-          skuChangeMessages[item.id] = priceUpdate.message || '';
+        if (!priceUpdate.isAvailable) {
+          skuChangeMessages[item.id] = 'Product not available at this pincode';
         }
       }
     }
@@ -614,8 +614,9 @@ export const updateCartPricesByPincode = (pincode: number) => {
       pincodeBasedSkus['selectedProduct'] = priceUpdate.sku || '';
 
       // Store SKU mismatch message if applicable
-      if (priceUpdate.skuChanged) {
-        skuChangeMessages['selectedProduct'] = priceUpdate.message || '';
+      if (!priceUpdate.isAvailable) {
+        skuChangeMessages['selectedProduct'] =
+          'Product not available at this pincode';
       }
     }
   }

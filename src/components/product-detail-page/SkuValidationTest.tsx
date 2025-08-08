@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
-  debugSkuValidation,
-  getPincodeProductDetails,
-  validateSkuForPincode,
+  getProductPriceByPincode,
+  isPincodeAvailable,
 } from '../../utilities/pincode-price-helper';
 
 const SkuValidationTest: React.FC = () => {
@@ -13,9 +12,13 @@ const SkuValidationTest: React.FC = () => {
   const [validationResult, setValidationResult] = useState<any>(null);
 
   const handleTest = () => {
-    const result = debugSkuValidation(originalSku, parseInt(pincode));
-    const details = getPincodeProductDetails(parseInt(pincode));
-    const validation = validateSkuForPincode(originalSku, parseInt(pincode));
+    const result = getProductPriceByPincode(parseInt(pincode), originalSku, 0);
+    const details = isPincodeAvailable(parseInt(pincode));
+    const validation = getProductPriceByPincode(
+      parseInt(pincode),
+      originalSku,
+      0
+    );
     setDebugResult(result);
     setPincodeDetails(details);
     setValidationResult(validation);
@@ -30,11 +33,9 @@ const SkuValidationTest: React.FC = () => {
       }}
     >
       <h3>Exact SKU Matching Test</h3>
-      <p
-        style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}
-      >
-        This test demonstrates the EXACT SKU matching requirement. Only
-        products with matching SKUs will have their prices updated.
+      <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
+        This test demonstrates the EXACT SKU matching requirement. Only products
+        with matching SKUs will have their prices updated.
       </p>
 
       <div style={{ marginBottom: '15px' }}>
@@ -80,9 +81,7 @@ const SkuValidationTest: React.FC = () => {
           <h4>Validation Result:</h4>
           <div
             style={{
-              backgroundColor: validationResult.isValid
-                ? '#d4edda'
-                : '#f8d7da',
+              backgroundColor: validationResult.isValid ? '#d4edda' : '#f8d7da',
               padding: '15px',
               borderRadius: '4px',
               border: `1px solid ${
@@ -163,4 +162,4 @@ const SkuValidationTest: React.FC = () => {
   );
 };
 
-export default SkuValidationTest; 
+export default SkuValidationTest;
