@@ -128,19 +128,7 @@ const PinCode = ({
 
       <div>
         <p className="pincode-text">{t('enterPinckToInstantlyCheck')}</p>
-        {isPincodePriceAvailable && (
-          <p
-            className="pincode-availability"
-            style={{
-              fontSize: '12px',
-              color: '#28a745',
-              marginTop: '5px',
-              fontWeight: '500',
-            }}
-          >
-            ✓ Exact SKU match found - Price updated
-          </p>
-        )}
+      
         {!isPincodePriceAvailable && isPincodeEnter && (
           <p
             className="pincode-unavailable"

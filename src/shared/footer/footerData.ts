@@ -4,7 +4,7 @@ import youtube from '../../assets/images/youtube-icon.png';
 import linkedIN from '../../assets/images/linkdin-icon.png';
 import pingsta from '../../assets/images/pinterest.png';
 import insta from '../../assets/images/instagram-icon.png';
-import whatsapp from '../../assets/images/whatsapp.jpg';
+import whatsapp from '../../assets/images/whatsapp.png';
 // import { FooterData } from '../../interface/common';
 
 export const socialMediya = [

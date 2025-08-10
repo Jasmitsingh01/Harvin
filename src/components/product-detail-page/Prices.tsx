@@ -42,18 +42,7 @@ const Prices = ({ selectedProduct, result }: any) => {
         )}
         <h3 className="product-new-prize text-26 weight-600 mb-0">
           {priceWithCurrency(displayPrice)}
-          {isPincodePriceAvailable && pincodeBasedPrice && (
-            <span
-              style={{
-                fontSize: '14px',
-                color: '#28a745',
-                marginLeft: '8px',
-                fontWeight: '500',
-              }}
-            >
-              • Local Price
-            </span>
-          )}
+         
         </h3>
         {discounted_price && discounted_price?.reduction !== null && (
           <p className="product-off mb-0">
@@ -62,17 +51,7 @@ const Prices = ({ selectedProduct, result }: any) => {
               : `${discounted_price?.reduction}% OFF`}
           </p>
         )}
-        {isPincodePriceAvailable && pincodeBasedPrice && pincodeBasedSku && (
-          <p
-            className="product-pincode-info mb-0"
-            style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}
-          >
-            Pincode Price • SKU: {pincodeBasedSku}
-            <span style={{ color: '#28a745', marginLeft: '8px' }}>
-              (Exact Match)
-            </span>
-          </p>
-        )}
+      
       </div>
       {/* {result?.coupon !== null && result?.coupon?.image_url !== null && (
         <div className="discount-coupon-img">

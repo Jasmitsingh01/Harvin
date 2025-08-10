@@ -25,9 +25,8 @@ const Footer = () => {
           <div className="footer-icon-item">
             {socialMediya?.map((item: any, index: number) => {
               return (
-                <a href="" key={index}>
-                  <ProgressiveImage src={item?.icon} alt="" />
-                </a>
+                
+                  <ProgressiveImage src={item?.icon} key={index}  alt="" />
               );
             })}
           </div>
