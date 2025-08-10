@@ -143,6 +143,5 @@ export const CategoryPage = styled.section`
     bottom: -10px;
     left: 50%;
     transform: translate(-50%, 0);
-    background-color: #fb551d;
   } */
 `;

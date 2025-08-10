@@ -3,7 +3,7 @@ import ROUTES from '../../utilities/api-routes';
 import { fetcherSWR } from '../../services/api';
 import useSWR from 'swr';
 import ProductSlider from '../../shared/product-slider';
-const SellerProducts = ({ loading }: any) => {
+const SellerProducts = ({ loading, title }: any) => {
   const { data, isLoading, error } = useSWR(
     ROUTES.getBestSellerProducts(),
     fetcherSWR
@@ -11,8 +11,8 @@ const SellerProducts = ({ loading }: any) => {
   return (
     <ProductSlider
       loading={isLoading || loading}
-      error={error}
-      title={'bestSellingProduct'}
+      error={error} 
+      title={title}
       data={data}
     />
   );

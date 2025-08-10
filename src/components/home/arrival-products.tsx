@@ -4,13 +4,13 @@ import { fetcherSWR } from '../../services/api';
 import useSWR from 'swr';
 import ProductSlider from '../../shared/product-slider';
 
-const ArrivalProducts = () => {
+const ArrivalProducts = ({ title }: any) => {
   const { data, isLoading, error } = useSWR(ROUTES.getNewArrival(), fetcherSWR);
   return (
     <ProductSlider
       loading={isLoading}
       error={error}
-      title={'newAtHarvin'}
+      title={title}
       data={data}
     />
   );

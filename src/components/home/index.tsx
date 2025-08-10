@@ -92,13 +92,14 @@ const Home = () => {
         />
 
         {/* Enhanced New Arrivals Section */}
+        <ArrivalProducts title={'Deals of the Day'} />
 
         {/* Featured Products Showcase */}
         <FeaturedShowcase />
-
+        <SellerProducts title={'Diwali Special Products'} loading={isLoading} />
         {/* Original sections for fallback */}
-        <SellerProducts loading={isLoading} />
-        <ArrivalProducts />
+        <SellerProducts title={'bestSellingProduct'} loading={isLoading} />
+        <ArrivalProducts title={'New at Harvin'} />
         <OfferSection data={data?.homebanner3} />
       </main>
     </>
