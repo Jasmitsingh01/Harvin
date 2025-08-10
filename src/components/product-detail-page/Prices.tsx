@@ -11,7 +11,7 @@ const Prices = ({ selectedProduct, result }: any) => {
   // const { selectQuantity, minimum_quantity } = selectedProductCombination;
   // const quantity = selectQuantity || minimum_quantity;
   const { discounted_price } = selectedProduct;
-  const { pincodeBasedPrice, pincodeBasedSku, isPincodePriceAvailable } =
+  const { pincodeBasedPrice, isPincodePriceAvailable } =
     usePincodeBasedPrice();
 
   // console.log('selectedProduct', result, selectedProduct);

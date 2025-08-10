@@ -28,6 +28,7 @@ const useIPDataStore = create((set) => ({
 
       set({ ipData: data, showOverlay, strictlyNecessary });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching IP data:', error);
     }
   },
