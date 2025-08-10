@@ -21,9 +21,9 @@ const CollectionSection = ({ data, loading }: any) => {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-                <div className="col-6">
-                  <div className="collection-title">
-                    <h3 className="text-32 weight-700">
+                <div className="col-6" >
+                  <div className="collection-title h-full" >
+                    <h3 className="text-32 weight-700" >
                       {t('collectionInFocus')}
                     </h3>
                   </div>

@@ -28,14 +28,14 @@ const Layout = (props: any) => {
             width: 'fit-content',
             height: 'fit-content',
             display: 'block',
-            padding: '20px 10px',
+            padding: '10px 20px',
           }}
         >
           <div className="whatsapp-content">
             <div className="whatsapp-icon">
               <i className="fab fa-whatsapp"></i>
             </div>
-            <p className="whatsapp-text">Chat with us</p>
+            <p className="whatsapp-text">Chat</p>
           </div>
         </a>
       </AppProvider>

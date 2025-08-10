@@ -1,15 +1,18 @@
 import pincodeData from './data.json';
 
+export interface ProductItem {
+  sku: string;
+  price?: number;
+}
+
 export interface PincodeProductData {
-  pincode: number;
-  products: {
-    sofa?: { sku: string; price: number | null };
-    mandir?: { sku: string; price: number | null };
-    bed?: { sku: string; price: number | null };
-    wardrobe?: { sku: string; price: number | null };
-    sofaCumBed?: { sku: string; price: number | null };
-    chairs?: { sku: string; price: number | null };
-  };
+  pincode: number[];
+  'Sofa/L Shape Sofa SKU': ProductItem[];
+  'Mandir SKU': ProductItem[];
+  'Bed SKU': ProductItem[];
+  'Wardrobe SKU': ProductItem[];
+  'Sofa Cum Bed SKU': ProductItem[];
+  'Chairs SKU': ProductItem[];
 }
 
 export interface ProductPriceUpdate {
@@ -18,6 +21,9 @@ export interface ProductPriceUpdate {
   sku: string | null;
   isAvailable: boolean;
 }
+
+// Extract the actual data from the imported data
+const actualData = pincodeData as PincodeProductData;
 
 /**
  * Get product price based on pincode and reference code
@@ -32,12 +38,8 @@ export const getProductPriceByPincode = (
   originalPrice: number
 ): ProductPriceUpdate => {
   try {
-    // Find the pincode data
-    const pincodeInfo = pincodeData.find(
-      (item: PincodeProductData) => item.pincode === pincode
-    );
-
-    if (!pincodeInfo) {
+    // Check if pincode is available
+    if (!actualData.pincode.includes(pincode)) {
       return {
         originalPrice,
         updatedPrice: null,
@@ -58,25 +60,24 @@ export const getProductPriceByPincode = (
       };
     }
 
-    const productData = pincodeData.find(
-      (item: PincodeProductData) =>
-        item.products[productType]?.sku === referenceCode
-    );
+    // Find the product in the corresponding array
+    const productArray = actualData[productType] as ProductItem[];
+    const product = productArray.find((item) => item.sku === referenceCode);
 
-    if (!productData || productData?.products[productType]?.price === null) {
+    if (!product) {
       return {
         originalPrice,
         updatedPrice: null,
-        sku: productData?.products[productType]?.sku || null,
+        sku: null,
         isAvailable: false,
       };
     }
 
     return {
       originalPrice,
-      updatedPrice: productData?.products[productType]?.price,
-      sku: productData?.products[productType]?.sku,
-      isAvailable: true,
+      updatedPrice: product.price || null,
+      sku: product.sku,
+      isAvailable: product.price !== undefined && product.price !== null,
     };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -97,7 +98,7 @@ export const getProductPriceByPincode = (
  */
 const getProductTypeFromReferenceCode = (
   referenceCode: string
-): keyof PincodeProductData['products'] | null => {
+): keyof PincodeProductData | null => {
   // Extract the product type from reference code
   // Reference code format: 8324-XXXX-XXX
   const codeParts = referenceCode.split('-');
@@ -110,31 +111,35 @@ const getProductTypeFromReferenceCode = (
 
   // Map product codes to product types based on data.json structure
   const productTypeMap: {
-    [key: string]: keyof PincodeProductData['products'];
+    [key: string]: keyof PincodeProductData;
   } = {
-    '1211': 'sofa',
-    '1212': 'sofa',
-    '1213': 'sofa',
-    '1214': 'sofa',
-    '1216': 'sofa',
-    '1217': 'sofa',
-    '1218': 'sofa',
-    '1220': 'sofa',
-    '1222': 'sofa',
-    '1223': 'sofa',
-    '1224': 'sofa',
-    '1225': 'sofa',
-    '1229': 'sofa',
-    '1230': 'sofa',
-    '1231': 'sofa',
-    '1411': 'mandir',
-    '1611': 'bed',
-    '1614': 'sofaCumBed',
-    '1811': 'wardrobe',
-    '1812': 'wardrobe',
-    '1813': 'wardrobe',
-    '1814': 'wardrobe',
-    '1112': 'chairs',
+    '1211': 'Sofa/L Shape Sofa SKU',
+    '1212': 'Sofa/L Shape Sofa SKU',
+    '1213': 'Sofa/L Shape Sofa SKU',
+    '1214': 'Sofa/L Shape Sofa SKU',
+    '1216': 'Sofa/L Shape Sofa SKU',
+    '1217': 'Sofa/L Shape Sofa SKU',
+    '1218': 'Sofa/L Shape Sofa SKU',
+    '1220': 'Sofa/L Shape Sofa SKU',
+    '1222': 'Sofa/L Shape Sofa SKU',
+    '1223': 'Sofa/L Shape Sofa SKU',
+    '1224': 'Sofa/L Shape Sofa SKU',
+    '1225': 'Sofa/L Shape Sofa SKU',
+    '1227': 'Sofa/L Shape Sofa SKU',
+    '1228': 'Sofa/L Shape Sofa SKU',
+    '1229': 'Sofa/L Shape Sofa SKU',
+    '1230': 'Sofa/L Shape Sofa SKU',
+    '1231': 'Sofa/L Shape Sofa SKU',
+    '1232': 'Sofa/L Shape Sofa SKU',
+    '1234': 'Sofa/L Shape Sofa SKU',
+    '1411': 'Mandir SKU',
+    '1611': 'Bed SKU',
+    '1614': 'Sofa Cum Bed SKU',
+    '1811': 'Wardrobe SKU',
+    '1812': 'Wardrobe SKU',
+    '1813': 'Wardrobe SKU',
+    '1814': 'Wardrobe SKU',
+    '1112': 'Chairs SKU',
   };
 
   return productTypeMap[productCode] || null;
@@ -146,9 +151,7 @@ const getProductTypeFromReferenceCode = (
  * @returns boolean indicating if pincode is available
  */
 export const isPincodeAvailable = (pincode: number): boolean => {
-  return pincodeData.some(
-    (item: PincodeProductData) => item.pincode === pincode
-  );
+  return actualData.pincode.includes(pincode);
 };
 
 /**
@@ -156,7 +159,7 @@ export const isPincodeAvailable = (pincode: number): boolean => {
  * @returns Array of available pincodes
  */
 export const getAvailablePincodes = (): number[] => {
-  return pincodeData.map((item: PincodeProductData) => item.pincode);
+  return actualData.pincode;
 };
 
 /**
@@ -167,16 +170,14 @@ export const getAvailablePincodes = (): number[] => {
  */
 export const isProductAvailableInPincode = (
   pincode: number,
-  productType: keyof PincodeProductData['products']
+  productType: keyof PincodeProductData
 ): boolean => {
-  const pincodeInfo = pincodeData.find(
-    (item: PincodeProductData) => item.pincode === pincode
-  );
-
-  if (!pincodeInfo) {
+  // First check if pincode is available
+  if (!actualData.pincode.includes(pincode)) {
     return false;
   }
 
-  const productData = pincodeInfo.products[productType];
-  return productData && productData.price !== null;
+  // Then check if the product type exists and has items
+  const productArray = actualData[productType] as ProductItem[];
+  return Array.isArray(productArray) && productArray.length > 0;
 };
