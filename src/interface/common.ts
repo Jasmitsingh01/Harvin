@@ -105,7 +105,8 @@ export interface RegisterInputs {
   phone?: number;
 }
 export interface LoginUsingOtpInput {
-  email: string;
+  email?: string;
+  mobile?: string;
 }
 export type ResetPasswordForm = Omit<
   ResetPasswordInput,

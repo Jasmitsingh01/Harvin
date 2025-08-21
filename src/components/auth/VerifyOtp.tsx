@@ -10,7 +10,7 @@ import {
   verifyOtpAction,
 } from '../../stores/user/user-action';
 
-import { getEmail, useLoading } from '../../stores/user/user-store';
+import { getEmail, getMobile, useLoading } from '../../stores/user/user-store';
 import { ModalTypeEnum } from '../../enums';
 
 import OTPInput from 'react-otp-input';
@@ -22,7 +22,11 @@ const VerifyOtp = ({ inCartView, loginCallback }: any) => {
     // defaultValues: { email: '', password:""},
   });
   const { loadingVerify } = useLoading();
-  const email: any = getEmail();
+  const emailData: any = getEmail();
+  const mobileData: any = getMobile();
+  // Extract the actual email and mobile values
+  const email = emailData?.email?.email || emailData?.email || '';
+  const mobile = mobileData?.mobile?.mobile || mobileData?.mobile || '';
   const [otp, setOtp] = useState('');
   // const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<any>(null);
@@ -33,7 +37,8 @@ const VerifyOtp = ({ inCartView, loginCallback }: any) => {
   const handleVerifyOTP = async () => {
     const payload = {
       otp: otp,
-      email: email,
+      email: email || undefined,
+      mobile: mobile || undefined,
     };
     verifyOtpAction(payload);
     setIsOtpValid(true);

@@ -9,6 +9,7 @@ export const INTIAL_STATE = {
   modalType: '',
   error: null,
   email: null,
+  mobile: null,
   isForgotView: false,
   addressLoading: false,
   addressModalPopup: false,
@@ -41,6 +42,12 @@ export const useModalData = () => {
 export const getEmail = () => {
   return useUserStore((s) => ({
     email: s.email,
+  }));
+};
+
+export const getMobile = () => {
+  return useUserStore((s) => ({
+    mobile: s.mobile,
   }));
 };
 

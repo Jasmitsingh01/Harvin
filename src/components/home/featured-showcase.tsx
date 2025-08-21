@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const FeaturedShowcaseSection = styled.section`
   padding: 80px 0;
   background: white;
-  color: #333;
+  color: #333;3
   position: relative;
 
   .showcase-header {
@@ -338,47 +338,157 @@ const SkeletonFeatured = () => (
 );
 
 const FeaturedShowcase: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState('1'); // Start with Sofas (ID: 1)
 
-  const { data: bestSellers, isLoading: loadingBest } = useSWR(
-    ROUTES.getBestSellerProducts(),
-    fetcherSWR
-  );
-  const { data: newArrivals, isLoading: loadingNew } = useSWR(
-    ROUTES.getNewArrival(),
-    fetcherSWR
-  );
-  const { data: topCategories, isLoading: loadingCategories } = useSWR(
+  // Fetch categories first
+  const { data: categoriesData, isLoading: loadingCategories, error: errorCategories } = useSWR(
     ROUTES.getTopFurnitureCategory(),
-    fetcherSWR
+    fetcherSWR,
+    { 
+      revalidateOnFocus: false,
+      errorRetryCount: 1,
+      onError: (err) => {
+        console.warn('Failed to fetch categories:', err);
+      }
+    }
   );
 
-  const isLoading = loadingBest || loadingNew || loadingCategories;
+  // Fetch category details (which includes children) for the active category
+  const { data: categoryDetails, isLoading: loadingCategoryDetails, error: errorCategoryDetails } = useSWR(
+    activeCategory ? ROUTES.getFeaturedProducts(activeCategory) : null,
+    fetcherSWR,
+    { 
+      revalidateOnFocus: false,
+      errorRetryCount: 1,
+      onError: (err) => {
+        console.warn('Failed to fetch category details:', err);
+      }
+    }
+  );
 
-  // Combine and filter products based on active category
-  const featuredProducts = React.useMemo(() => {
-    if (!bestSellers || !newArrivals) return [];
+  const isLoading = loadingCategories || loadingCategoryDetails;
+  const hasApiError = errorCategories || errorCategoryDetails;
 
-    const allProducts = [...(bestSellers || []), ...(newArrivals || [])];
-
-    if (activeCategory === 'all') {
-      return allProducts.slice(0, 8);
+  // Prepare categories for tabs
+  const categories = React.useMemo(() => {
+    // If there's an API error, show fallback categories with the specific IDs
+    if (hasApiError) {
+      return [
+        { id: '1', name: 'Sofas', slug: 'sofas' },
+        { id: '2', name: 'Chairs', slug: 'chairs' },
+        { id: '3', name: 'Table', slug: 'table' },
+        { id: '4', name: 'Wardrobe', slug: 'wardrobe' },
+        { id: '6', name: 'Pooja Cabinet', slug: 'pooja-cabinet' },
+        { id: '7', name: 'Bed', slug: 'bed' },
+        { id: '8', name: 'Outdoor Furniture', slug: 'outdoor-furniture' },
+        { id: '52', name: 'L Shape Sofa', slug: 'l-shape-sofa' },
+        { id: '51', name: 'Sofa cum Bed', slug: 'sofa-cum-bed' },
+        { id: '61', name: 'Dining Table', slug: 'dining-table' },
+        { id: '58', name: 'Sale Offer', slug: 'sale-offer' },
+        { id: '65', name: 'Monsoon Sale Offer', slug: 'monsoon-sale-offer' }
+      ];
     }
 
-    return allProducts
-      .filter((product) => product.category_id === parseInt(activeCategory))
-      .slice(0, 8);
-  }, [bestSellers, newArrivals, activeCategory]);
+    // Use real category data from API, but filter to only include the specific IDs
+    if (Array.isArray(categoriesData)) {
+      const specificCategoryIds = ['1', '2', '3', '4', '6', '7', '8', '49', '51', '61', '58', '65'];
+      
+      const categoryOptions = categoriesData
+        .filter((cat: any) => specificCategoryIds.includes(cat.id?.toString()))
+        .slice(0, 8) // Limit to 8 categories for better UX
+        .map((cat: any) => ({
+          id: cat.id?.toString(),
+          name: cat.name,
+          slug: cat.slug
+        }))
+        .filter(cat => cat.id && cat.name); // Filter out invalid entries
 
-  const categories = React.useMemo(() => {
-    if (!topCategories) return [];
-    return [
-      { id: 'all', name: 'All Products' },
-      ...topCategories
-        .slice(0, 4)
-        .map((cat: any) => ({ id: cat.id.toString(), name: cat.name })),
-    ];
-  }, [topCategories]);
+      return categoryOptions;
+    }
+
+    return [];
+  }, [categoriesData, hasApiError]);
+
+  // Handle category tab click
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+  };
+
+  // Get products to display from category children
+  const productsToDisplay = React.useMemo(() => {
+    // If there's an API error, show fallback products
+    if (hasApiError) {
+      return [
+        {
+          id: 1,
+          name: 'Premium Sofa Set',
+          price: 29999,
+          original_price: 35999,
+          image: '/images/chester-sofa.png',
+          category_id: '1',
+          slug: 'premium-sofa-set',
+          isCategory: true
+        },
+        {
+          id: 2,
+          name: 'Modern Dining Table',
+          price: 15999,
+          original_price: 19999,
+          image: '/images/chester-sofa.png',
+          category_id: '2',
+          slug: 'modern-dining-table',
+          isCategory: true
+        },
+        {
+          id: 3,
+          name: 'Comfortable Bed Frame',
+          price: 22499,
+          original_price: 26999,
+          image: '/images/chester-sofa.png',
+          category_id: '3',
+          slug: 'comfortable-bed-frame',
+          isCategory: true
+        },
+        {
+          id: 4,
+          name: 'Elegant Wardrobe',
+          price: 19099,
+          original_price: 22999,
+          image: '/images/chester-sofa.png',
+          category_id: '4',
+          slug: 'elegant-wardrobe',
+          isCategory: true
+        }
+      ];
+    }
+
+    // Return children from category details as products
+    if (categoryDetails && categoryDetails.children && Array.isArray(categoryDetails.children)) {
+      return categoryDetails.children
+        .filter((child: any) => child.enabled === 1) // Only show enabled categories
+        .slice(0, 8) // Limit to 8 products
+        .map((child: any) => ({
+          id: child.id,
+          name: child.name,
+          slug: child.slug,
+          image: child.icon?.url || child.image?.url || '/images/chester-sofa.png',
+          category_id: child.parent,
+          isCategory: true, // Mark as category for proper routing
+          // Add some sample pricing for display
+          price: Math.floor(Math.random() * 20000) + 10000, // Random price between 10k-30k
+          original_price: Math.floor(Math.random() * 25000) + 15000, // Random original price
+          gallery: child.icon?.url ? [{ original: child.icon.url }] : [],
+          product_combination_short: [{
+            price: Math.floor(Math.random() * 20000) + 10000,
+            original_price: Math.floor(Math.random() * 25000) + 15000
+          }]
+        }));
+    }
+
+    return [];
+  }, [categoryDetails, hasApiError]);
+
+  console.log(productsToDisplay, 'featuredProductstest');
 
   const stats = [
     { icon: 'fas fa-award', number: '500+', label: 'Featured Products' },
@@ -445,29 +555,34 @@ const FeaturedShowcase: React.FC = () => {
           </p>
         </div>
 
-        <div className="category-tabs">
-          {categories.map((category: any) => (
-            <button
-              key={category.id}
-              className={`tab-button ${
-                activeCategory === category.id ? 'active' : ''
-              }`}
-              onClick={() => setActiveCategory(category.id)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
+        {/* Category Tabs */}
+        {categories.length > 0 && (
+          <div className="category-tabs">
+            {categories.map((category: any) => (
+              <button
+                key={category.id}
+                className={`tab-button ${
+                  activeCategory === category.id ? 'active' : ''
+                }`}
+                onClick={() => handleCategoryChange(category.id)}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+        )}
 
+        {/* Featured Products Grid */}
         <div className="featured-grid">
-          {featuredProducts.map((product: any) => (
+          {productsToDisplay.map((product: any) => (
             <div key={product.id} className="featured-card">
               <CardView product={product} compact={true} />
             </div>
           ))}
         </div>
 
-        {featuredProducts.length === 0 && (
+        {/* No Products Found Message */}
+        {productsToDisplay.length === 0 && !hasApiError && (
           <div
             style={{
               textAlign: 'center',
@@ -513,6 +628,34 @@ const FeaturedShowcase: React.FC = () => {
           </div>
         )}
 
+        {/* API Error Message */}
+        {hasApiError && (
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '20px',
+              color: '#666',
+              gridColumn: '1 / -1',
+              background: '#fff3cd',
+              borderRadius: '12px',
+              border: '1px solid #ffeaa7',
+              marginBottom: '20px',
+            }}
+          >
+            <p
+              style={{
+                fontSize: '0.9rem',
+                margin: '0',
+                color: '#856404',
+              }}
+            >
+              <i className="fas fa-info-circle" style={{ marginRight: '8px' }}></i>
+              Showing sample products. API connection may be temporarily unavailable.
+            </p>
+          </div>
+        )}
+
+        {/* Stats Section */}
         <div className="stats-section">
           {stats.map((stat) => (
             <div key={stat.label} className="stat-card">

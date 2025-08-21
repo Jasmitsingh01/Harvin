@@ -204,6 +204,7 @@ const VerifyOtpRegister = ({ inCartView, loginCallback }: any) => {
     const payload = {
       otp: otp,
       email: email?.dataRegister?.email?.email || '',
+      mobile: email?.dataRegister?.email?.phone || '', // Add mobile field
       first_name: email?.dataRegister?.email?.first_name || '',
       last_name: email?.dataRegister?.email?.last_name || '',
       password: email?.dataRegister?.email?.password || '',

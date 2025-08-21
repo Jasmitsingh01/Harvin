@@ -18,6 +18,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
+      'localhost',
+      '127.0.0.1',
       'https://harvin.foodnextdoor.shop',
       'harvin.foodnextdoor.shop',
       'harvin.foodnextdoor.shop',
@@ -30,6 +32,15 @@ const nextConfig = {
       'api.harvinchairs.com',
       'images.unsplash.com'
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname:"*"
+      },
+      
+    ],
+    unoptimized: false,
+    formats: ['image/webp', 'image/avif'],
   },
   typescript: {
     tsconfigPath,

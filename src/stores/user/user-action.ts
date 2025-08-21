@@ -35,11 +35,41 @@ export const setProductToWishList = () => {
   }
 };
 
-export const verifyOtpAction = async (data: { otp: string; email: any }) => {
+export const verifyOtpAction = async (data: { otp: string; email?: any; mobile?: any }) => {
   setState({ loadingVerify: true });
 
   try {
-    const { data: result } = await api.post(ROUTES.verifyOtp(), data);
+    // Create payload with both email and mobile support
+    const payload: any = {
+      otp: data.otp
+    };
+    
+    // Add email if available
+    if (data.email) {
+      payload.email = data.email;
+    }
+    
+    // Add mobile if available (with +91 country code if needed)
+    if (data.mobile) {
+      let mobileNumber = data.mobile;
+      
+      // Add +91 country code if not already present
+      if (!mobileNumber.startsWith('+91')) {
+        // Remove any existing + or country code if present
+        mobileNumber = mobileNumber.replace(/^\+/, '').replace(/^91/, '');
+        payload.mobile = `+91${mobileNumber}`;
+      } else {
+        payload.mobile = mobileNumber;
+      }
+    }
+    
+    // Ensure at least one contact method is provided
+    if (!payload.email && !payload.mobile) {
+      setState({ loadingVerify: false });
+      return toast.error('Please provide either email or mobile number');
+    }
+
+    const { data: result } = await api.post(ROUTES.verifyOtp(), payload);
     setState({ loadingVerify: false });
 
     if (result.token) {
@@ -66,12 +96,59 @@ export const verifyOtpAction = async (data: { otp: string; email: any }) => {
 
 export const verifyOtpActionRegister = async (data: {
   otp: string;
-  email: any;
+  email?: any;
+  mobile?: any;
+  first_name?: string;
+  last_name?: string;
+  password?: string;
+  newsletter?: number;
+  phone?: string;
+  pincode?: string;
+  permission?: string;
 }) => {
   setState({ loadingVerify: true });
 
   try {
-    const { data: result } = await api.post(ROUTES.verifyOtpRegister(), data);
+    // Create payload with both email and mobile support
+    const payload: any = {
+      otp: data.otp
+    };
+    
+    // Add email if available
+    if (data.email) {
+      payload.email = data.email;
+    }
+    
+    // Add mobile if available (with +91 country code if needed)
+    if (data.mobile) {
+      let mobileNumber = data.mobile;
+      
+      // Add +91 country code if not already present
+      if (!mobileNumber.startsWith('+91')) {
+        // Remove any existing + or country code if present
+        mobileNumber = mobileNumber.replace(/^\+/, '').replace(/^91/, '');
+        payload.mobile = `+91${mobileNumber}`;
+      } else {
+        payload.mobile = mobileNumber;
+      }
+    }
+    
+    // Add other registration fields
+    if (data.first_name) payload.first_name = data.first_name;
+    if (data.last_name) payload.last_name = data.last_name;
+    if (data.password) payload.password = data.password;
+    if (data.newsletter !== undefined) payload.newsletter = data.newsletter;
+    if (data.phone) payload.phone = data.phone;
+    if (data.pincode) payload.pincode = data.pincode;
+    if (data.permission) payload.permission = data.permission;
+    
+    // Ensure at least one contact method is provided
+    if (!payload.email && !payload.mobile) {
+      setState({ loadingVerify: false });
+      return toast.error('Please provide either email or mobile number');
+    }
+
+    const { data: result } = await api.post(ROUTES.verifyOtpRegister(), payload);
     setState({ loadingVerify: false });
 
     if (result.token) {
@@ -104,9 +181,41 @@ export const loginUsingOtpAction = async (
   setState({ loading: true });
 
   try {
-    const { data: result } = await api.post(ROUTES.logingUsingOTP(), data);
+    // Create payload with both email and mobile support
+    const payload: any = {};
+    
+    // Add email if available
+    if (data?.email) {
+      payload.email = data.email;
+    }
+    
+    // Add mobile if available (with +91 country code if needed)
+    if (data?.mobile) {
+      let mobileNumber = data.mobile;
+      
+      // Add +91 country code if not already present
+      if (!mobileNumber.startsWith('+91')) {
+        // Remove any existing + or country code if present
+        mobileNumber = mobileNumber.replace(/^\+/, '').replace(/^91/, '');
+        payload.mobile = `+91${mobileNumber}`;
+      } else {
+        payload.mobile = mobileNumber;
+      }
+    }
+    
+    // Ensure at least one contact method is provided
+    if (!payload.email && !payload.mobile) {
+      setState({ loading: false });
+      return toast.error('Please provide either email or mobile number');
+    }
+
+    const { data: result } = await api.post(ROUTES.logingUsingOTP(), payload);
     setState({ loading: false });
-    setState({ email: data?.email });
+    // Store both email and mobile separately
+    setState({ 
+      email: data?.email || null,
+      mobile: data?.mobile || null
+    });
 
     if (result.status) {
       if (loginCallback) {
@@ -134,9 +243,35 @@ export const loginUsingOtpActionRegister = async (
   setState({ loading: true });
 
   try {
-    const { data: result } = await api.post(ROUTES.logingUSingOTPregister(), {
-      email: data?.email?.email,
-    });
+    // Create payload with both email and mobile support
+    const payload: any = {};
+    
+    // Add email if available (from the form values)
+    if (data?.email?.email) {
+      payload.email = data.email.email;
+    }
+    
+    // Add mobile if available (from the form values - phone field)
+    if (data?.email?.phone) {
+      let mobileNumber = data.email.phone;
+      
+      // Add +91 country code if not already present
+      if (!mobileNumber.startsWith('+91')) {
+        // Remove any existing + or country code if present
+        mobileNumber = mobileNumber.replace(/^\+/, '').replace(/^91/, '');
+        payload.mobile = `+91${mobileNumber}`;
+      } else {
+        payload.mobile = mobileNumber;
+      }
+    }
+    
+    // Ensure at least one contact method is provided
+    if (!payload.email && !payload.mobile) {
+      setState({ loading: false });
+      return toast.error('Please provide either email or mobile number');
+    }
+
+    const { data: result } = await api.post(ROUTES.logingUSingOTPregister(), payload);
     setState({ loading: false });
     setState({ dataRegister: data });
 

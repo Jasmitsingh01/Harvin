@@ -51,7 +51,7 @@ const LoginUsingOTP = ({ loginCallback }: any) => {
         noValidate
       >
         <h3 className="text-24 weight-600">{t('login')}</h3>
-        <p>{t('enteryouremailaddresstogetotp')}</p>
+        <p>Enter your email address or mobile number to get OTP</p>
 
         {loginUsingOTP.map((field) => (
           <div className="form-group" key={field.name}>

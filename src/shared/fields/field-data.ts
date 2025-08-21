@@ -27,7 +27,8 @@ export const resetPasswordInputs = [
 ];
 
 export const loginUsingOTP = [
-  { type: 'email', name: 'email', placeholder: 'email' },
+  { type: 'email', name: 'email', placeholder: 'Email Address' },
+  { type: 'tel', name: 'mobile', placeholder: 'Mobile Number' },
 ];
 
 export const registerUser = [

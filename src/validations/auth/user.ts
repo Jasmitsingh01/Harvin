@@ -38,7 +38,20 @@ export const userLoginOtpSchema = yup.object().shape({
       /^[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}(?:\.[A-Za-z]{2,})?$/,
       'Email is required'
     )
-    .required('Email is required'),
+    .optional(),
+  mobile: yup
+    .string()
+    .test('is-valid-mobile', 'Please enter valid mobile number', (value) => {
+      if (!value || value.length === 0) return true; // Allow empty
+      return value.length === 10 && /^[0-9]{10}$/.test(value) && !/^(0+)$/.test(value);
+    })
+    .optional(),
+}).test('at-least-one-contact', 'Please provide either email or mobile number', function(value) {
+  const { email, mobile } = value;
+  if (!email && !mobile) {
+    return this.createError({ message: 'Please provide either email or mobile number' });
+  }
+  return true;
 });
 // export const userRegisterSchema = yup.object().shape({
 //   first_name: yup.string().required('First name is required'),

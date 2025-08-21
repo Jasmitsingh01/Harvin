@@ -13,7 +13,7 @@ const CardView = ({ product, key, compact = false }: any) => {
   const [isZoomed, setIsZoomed] = React.useState(false);
 
   const handleMouseEnter = () => {
-    if (product?.gallery.length > 1) {
+    if (product?.gallery && product.gallery.length > 1) {
       setIndex(1);
     } else {
       setIsZoomed(true);
@@ -31,7 +31,17 @@ const CardView = ({ product, key, compact = false }: any) => {
       key={key}
       onClick={(e) => {
         e.stopPropagation();
-        router.push(`/product/${product?.id}-${product?.slug}`);
+        // Check if this is a category (from featured showcase)
+        if (product?.isCategory) {
+          // Route to category page instead of product page
+          router.push(`/categories/${product.id}-${product.slug}`);
+        } else if (product?.id && product?.slug) {
+          // Regular product routing
+          router.push(`/product/${product.id}-${product.slug}`);
+        } else if (product?.id) {
+          // Fallback to just ID if no slug
+          router.push(`/product/${product.id}`);
+        }
       }}
     >
       <div className="product-item">
@@ -41,7 +51,7 @@ const CardView = ({ product, key, compact = false }: any) => {
           onMouseLeave={handleMouseLeave}
         >
           <ProgressiveImage
-            src={product?.gallery[index]?.original}
+            src={product?.gallery?.[index]?.original}
             alt=""
             style={{ transform: isZoomed ? 'scale(1.1)' : 'scale(1)' }}
             key={key}
@@ -54,7 +64,7 @@ const CardView = ({ product, key, compact = false }: any) => {
                 (product?.name?.length > 50 ? '...' : '')
               : product?.name}
           </h3>
-          <CardPrices prices={product?.product_combination_short[0]} />
+          <CardPrices prices={product?.product_combination_short?.[0]} />
           {!compact && (
             <div className="rating-wrap d-flex align-items-center">
               <Rating
