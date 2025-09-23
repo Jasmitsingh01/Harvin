@@ -96,9 +96,19 @@ const Home = () => {
 
         {/* Featured Products Showcase */}
         <FeaturedShowcase />
-        <SellerProducts title={'Diwali Special Products'} loading={isLoading} />
+        <SellerProducts 
+          title={'Diwali Special Products'} 
+          loading={isLoading} 
+          referenceCodes={["8324-1220-057", "8324-1222-057", "8324-1222-055" ,"8324-1220-062","8324-1220-061", "8324-1220-060","8324-1220-059","8324-1220-058","8324-1220-057","8324-1222-057"]}
+          language="en"
+        />
         {/* Original sections for fallback */}
-        <SellerProducts title={'bestSellingProduct'} loading={isLoading} />
+        <SellerProducts 
+          title={'bestSellingProduct'} 
+          loading={isLoading} 
+          referenceCodes={["8324-1220-036", "8324-1220-037", "8324-1220-051" ,"8324-1220-050","8324-1220-052", "8324-1220-055","8324-1220-056","8324-1220-046"]}
+          language="en"
+        />
         <ArrivalProducts title={'New at Harvin'} />
         <OfferSection data={data?.homebanner3} />
       </main>

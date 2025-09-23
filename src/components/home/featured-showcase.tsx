@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import ROUTES from '../../utilities/api-routes';
-import { fetcherSWR } from '../../services/api';
+import { fetcherSWR, fetcherSWRPost } from '../../services/api';
 import CardView from '../../shared/cards';
 import { Skeleton } from '@mui/material';
 import { range } from 'lodash';
@@ -353,10 +353,28 @@ const FeaturedShowcase: React.FC = () => {
     }
   );
 
+  // Define reference codes for Sofas category
+  const sofasReferenceCodes = [
+    "8324-1220-052",
+    "8324-1220-053", 
+    "8324-1220-054",
+    "8324-1223-084",
+    "8324-1223-085",
+    "8324-1222-053",
+    "8324-1220-049",
+    "8324-1220-050"
+  ];
+
   // Fetch category details (which includes children) for the active category
   const { data: categoryDetails, isLoading: loadingCategoryDetails, error: errorCategoryDetails } = useSWR(
-    activeCategory ? ROUTES.getFeaturedProducts(activeCategory) : null,
-    fetcherSWR,
+    activeCategory ? 
+      (activeCategory === '1' ? 
+        [ROUTES.fetchProductListwithRefrecode(), { reference_codes: sofasReferenceCodes, language: "en" }] :
+        ROUTES.getFeaturedProducts(activeCategory)
+      ) : null,
+    activeCategory === '1' ? 
+      ([url, body]) => fetcherSWRPost(url, body) :
+      fetcherSWR,
     { 
       revalidateOnFocus: false,
       errorRetryCount: 1,
@@ -462,7 +480,29 @@ const FeaturedShowcase: React.FC = () => {
       ];
     }
 
-    // Return children from category details as products
+    // Handle Sofas category with reference codes API
+    if (activeCategory === '1' && categoryDetails && categoryDetails.data && categoryDetails.data.products) {
+      return categoryDetails.data.products
+        .slice(0, 8) // Limit to 8 products
+        .map((product: any) => ({
+          id: product.id,
+          name: product.name,
+          slug: product.slug,
+          image: product.gallery?.[0]?.thumbnail || product.gallery?.[0]?.original || '/images/chester-sofa.png',
+          category_id: product.default_category,
+          isCategory: false, // These are actual products, not categories
+          price: product.product_combination_short?.[0]?.price || product.attribute_combinations?.[0]?.price || 0,
+          original_price: product.product_combination_short?.[0]?.price || product.attribute_combinations?.[0]?.price || 0,
+          gallery: product.gallery || [],
+          product_combination_short: product.product_combination_short || [],
+          reference_code: product.reference_code,
+          in_stock: product.in_stock,
+          ratings: product.ratings,
+          total_reviews: product.total_reviews
+        }));
+    }
+
+    // Return children from category details as products (for other categories)
     if (categoryDetails && categoryDetails.children && Array.isArray(categoryDetails.children)) {
       return categoryDetails.children
         .filter((child: any) => child.enabled === 1) // Only show enabled categories
@@ -486,7 +526,7 @@ const FeaturedShowcase: React.FC = () => {
     }
 
     return [];
-  }, [categoryDetails, hasApiError]);
+  }, [categoryDetails, hasApiError, activeCategory]);
 
   console.log(productsToDisplay, 'featuredProductstest');
 

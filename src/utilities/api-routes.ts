@@ -82,6 +82,7 @@ const ROUTES = {
   getFaqIdSearch: (search: any) => `/get-general-faq?search=${search}`,
   staticPage: (slug: any) => `/show-static-page?slug=${slug}`,
   accountRemoval: () => `/delete-user-request`,
+  fetchProductListwithRefrecode: () => `/fetchProductListwithRefrecode`,
 };
 
 export default ROUTES;

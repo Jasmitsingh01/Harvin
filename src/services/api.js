@@ -148,6 +148,48 @@ export const fetcherSWR = async (url, showError = false, body) => {
   }
 };
 
+export const fetcherSWRPost = async (url, body, showError = false) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify(body),
+  };
+  if (typeof window !== 'undefined') {
+    if (localStorage.token && options.headers) {
+      options.headers['Authorization'] = `Bearer ${localStorage.token}`;
+    }
+  }
+
+  // eslint-disable-next-line no-undef
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  let response = null;
+  try {
+    response = await fetch(baseUrl + url, options);
+    const json = await response.json();
+    if (response.ok) {
+      return json;
+    }
+    if (response.status === ResponseStatus[404]) {
+      throw new Error(renderToString(<ErrorMessages message={'notfound'} />));
+    }
+    if (response.status === ResponseStatus[400]) {
+      throw new Error(renderToString(<ErrorMessages message={'badRequest'} />));
+    }
+    if (response.status === ResponseStatus[500]) {
+      throw new Error(
+        renderToString(<ErrorMessages message={'serverError'} />)
+      );
+    }
+    showError && toast.error(json.messages);
+    throw new Error(json.messages);
+  } catch (e) {
+    showError && toast.error(e.message || e.stack);
+    throw new Error(e.message || e.stack);
+  }
+};
+
 const api = {
   get(url, showError = false) {
     return fetcher(url, showError);
