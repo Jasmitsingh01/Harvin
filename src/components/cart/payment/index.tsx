@@ -52,7 +52,7 @@ const PaymentBlock = () => {
   };
 
   const handlePayment = useCallback(() => {
-    // Payment processing removed - Razorpay integration was removed
+    // Payment processing removed - RAZORPAY integration was removed
     // This would need to be replaced with alternative payment gateway
     toast.info('Payment processing not configured');
     // For now, just show success message
@@ -82,7 +82,7 @@ const PaymentBlock = () => {
         paid_total: subtotalSum,
         total: 1239,
         customer_contact: selectedAddress?.mobile_number,
-        payment_gateway: 'OTHER',
+        payment_gateway: 'RAZORPAY',
         billing_address: selectedAddress?.id,
         shipping_address: selectedAddress?.id,
         cart_id: cartItems[0]?.cart_id,
@@ -130,7 +130,7 @@ const PaymentBlock = () => {
             ? selectedProduct?.discounted_price.discounted_price
             : selectedProduct.price),
         customer_contact: selectedAddress?.mobile_number,
-        payment_gateway: 'OTHER',
+        payment_gateway: 'RAZORPAY',
         billing_address: selectedAddress?.id,
         shipping_address: selectedAddress?.id,
         cart_id: null,
