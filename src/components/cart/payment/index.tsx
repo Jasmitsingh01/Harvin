@@ -62,7 +62,7 @@ const PaymentBlock = () => {
         return;
       }
 
-      if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+      if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID && !process.env.NEXT_PUBLIC_RAZORPAY_KEY) {
         toast.error('Payment configuration missing. Please contact support.');
         return;
       }

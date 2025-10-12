@@ -1,9 +1,9 @@
 // Razorpay Configuration
 export const razorpayConfig = {
-  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY || '',
   currency: 'INR',
   name: 'Harvin Chairs',
-  description: 'Payment for your order',
+  description: 'Payment for your Harvin Chairs order',
   image: '/favicon.ico', // Your company logo
   theme: {
     color: '#3399cc'
