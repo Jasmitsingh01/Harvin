@@ -23,6 +23,7 @@ import { useRouter } from 'next/router';
 // import { getCartItems } from '../../../stores/cart/cart-action';
 import { useCoupon } from '../../../stores/coupon/coupon-store';
 import { toast } from 'react-toastify';
+import { loadRazorpayScript, razorpayConfig, RazorpayOptions, RazorpayResponse } from '../../../utilities/razorpay-config';
 
 const PaymentBlock = () => {
   const [activeAccordion, setActiveAccordion] = useState<any>(null);
@@ -51,13 +52,64 @@ const PaymentBlock = () => {
     setPaymentMethod(tab);
   };
 
-  const handlePayment = useCallback(() => {
-    // Payment processing removed - RAZORPAY integration was removed
-    // This would need to be replaced with alternative payment gateway
-    toast.info('Payment processing not configured');
-    // For now, just show success message
-    toast.success('Order placed successfully!');
-  }, [paymentMethod]);
+  const handlePayment = useCallback(async (orderData: any) => {
+    try {
+      // Load Razorpay script
+      const isRazorpayLoaded = await loadRazorpayScript();
+      
+      if (!isRazorpayLoaded) {
+        toast.error('Failed to load payment gateway. Please try again.');
+        return;
+      }
+
+      if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+        toast.error('Payment configuration missing. Please contact support.');
+        return;
+      }
+
+      const options: RazorpayOptions = {
+        key: razorpayConfig.key_id,
+        amount: Math.round((orderData?.amount || 0) * 100), // Convert to paise
+        currency: razorpayConfig.currency,
+        name: razorpayConfig.name,
+        description: razorpayConfig.description,
+        image: razorpayConfig.image,
+        handler: (response: RazorpayResponse) => {
+          // Payment successful
+          toast.success('Payment successful! Order placed.');
+          // You can call your backend API here to verify payment
+          console.log('Payment Response:', response);
+          
+          // Redirect to thank you page or order confirmation
+          const compressedData = btoa(JSON.stringify({
+            payment_id: response.razorpay_payment_id,
+            order_id: response.razorpay_order_id,
+            signature: response.razorpay_signature
+          }));
+          
+          router.push(`/thankyou?p=${compressedData}`);
+        },
+        prefill: {
+          name: selectedAddress?.name || '',
+          email: selectedAddress?.email || '',
+          contact: selectedAddress?.mobile_number || ''
+        },
+        theme: razorpayConfig.theme,
+        modal: {
+          ondismiss: () => {
+            toast.info('Payment cancelled by user.');
+          }
+        }
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+      
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast.error('Payment failed. Please try again.');
+    }
+  }, [selectedAddress, router]);
 
   const handleProceedToPayment = () => {
     let dataToPost;
@@ -138,8 +190,8 @@ const PaymentBlock = () => {
       };
     }
 
-    // handlePayment(dataToPost);
-    postOrder(dataToPost, handlePayment);
+    // First create the order, then handle payment
+    postOrder(dataToPost, () => handlePayment(dataToPost));
   };
   return (
     <section className="cart-payment-wrap">
