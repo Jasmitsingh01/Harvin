@@ -16,12 +16,14 @@ import ForgotPassword from '../auth/ForgotPassword';
 import { useRouter } from 'next/router';
 import { useCoupon } from '../../stores/coupon/coupon-store';
 import VerifyOtpRegister from '../auth/VerifyOtpRegister';
+import { useCartPincodeBasedPrice } from '../../stores/cart/cart-store';
 
 const LoginBlock = () => {
   const { t } = useTranslation();
   const { cartItems, selectedProduct } = useCartStore();
   const [loginState, setLoginState] = useState(0);
   const { coupon } = useCoupon();
+  const { pincodeBasedPrices } = useCartPincodeBasedPrice();
 
   const callback = (value: number) => {
     setLoginState(value);
@@ -83,7 +85,9 @@ const LoginBlock = () => {
                   <li>
                     <span className="weight-500">{t('MRP')}</span>
                     <span className="amount weight-500">
-                      {priceWithCurrency(calculateTotal(cartItems))}
+                      {priceWithCurrency(
+                        calculateTotal(cartItems, pincodeBasedPrices)
+                      )}
                     </span>
                   </li>
                   <li>
@@ -106,7 +110,12 @@ const LoginBlock = () => {
                   </h3>
                   <h3 className="pay-amount-num text-24 weight-600 ">
                     {priceWithCurrency(
-                      calculateMainTotal(cartItems, coupon, false)
+                      calculateMainTotal(
+                        cartItems,
+                        coupon,
+                        false,
+                        pincodeBasedPrices
+                      )
                     )}
                   </h3>
                 </div>

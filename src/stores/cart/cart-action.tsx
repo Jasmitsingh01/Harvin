@@ -309,14 +309,17 @@ export const proceedToAddAddress = async () => {
   });
 };
 
-export const calculateTotal = (items: any[]) => {
+export const calculateTotal = (
+  items: any[],
+  pincodeBasedPrices?: { [key: string]: number }
+) => {
   const data = items.filter((item) => !item.errorMessage);
-  return sumBy(
-    data,
-    (item) =>
-      (item?.base_price || item?.unit_price) *
-        (item?.selectQuantity || item?.select_quantity) || 0
-  );
+  return sumBy(data, (item) => {
+    // Use pincode-based price if available, otherwise use original price
+    const itemPrice =
+      pincodeBasedPrices?.[item.id] || item?.base_price || item?.unit_price;
+    return itemPrice * (item?.selectQuantity || item?.select_quantity) || 0;
+  });
 };
 
 export const calculateDiscount = (items: any[]) => {
@@ -347,25 +350,28 @@ export const calculateDiscount = (items: any[]) => {
 export const calculateMainTotal = (
   items: any[],
   coupon: any,
-  showGST: boolean = true
+  showGST: boolean = true,
+  pincodeBasedPrices?: { [key: string]: number },
+  additionalAssemblyCharges: number = 0
 ) => {
   const data = items.filter((item) => !item.errorMessage);
 
-  // Calculate total price of all items
+  // Calculate total price of all items using pincode-based prices if available
   const total =
-    sumBy(
-      data,
-      (item) =>
-        (item?.base_price || item?.unit_price) *
-        (item?.selectQuantity || item?.select_quantity)
-    ) || 0;
+    sumBy(data, (item) => {
+      // Use pincode-based price if available, otherwise use original price
+      const itemPrice =
+        pincodeBasedPrices?.[item.id] || item?.base_price || item?.unit_price;
+      return itemPrice * (item?.selectQuantity || item?.select_quantity) || 0;
+    }) || 0;
 
   // Calculate total discount
   const discountedPrice = sumBy(data, (item) => discountDifference(item));
 
-  // Calculate assembly charges
+  // Calculate assembly charges (base + additional from pincode pricing)
   const assemblyCharges =
-    sumBy(data, (item: any) => item?.assembly_charges) || 0;
+    (sumBy(data, (item: any) => item?.assembly_charges) || 0) +
+    additionalAssemblyCharges;
 
   // Calculate total SGST charges if showGST is true, otherwise set it to 0
   const totalSGSTCharges = calcuLateSGSTCharges(showGST);

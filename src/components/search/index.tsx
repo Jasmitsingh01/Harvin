@@ -47,7 +47,7 @@ const Search = () => {
 
   const { productList } = useSearchGetData();
   const currentPage = useCurrentPage();
-  const itemsPerPage = 8 || 0;
+  const itemsPerPage = Number(8) || Number(0);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedItems = productList?.slice(startIndex, endIndex) || [];
