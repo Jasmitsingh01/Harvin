@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,md}": "prettier --write --ignore-unknown",
-    "src/**/*.{ts,tsx}": "yarn run lint"
+    "src/**/*.{ts,tsx}": "npm run lint"
   },
   "husky": {
     "hooks": {
@@ -93,6 +93,7 @@
     "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "husky": "^7.0.0",
+    "lint-staged": "^13.3.0",
     "prettier": "3.0.0",
     "style-loader": "^3.3.3",
     "typescript": "^5.3.3"
